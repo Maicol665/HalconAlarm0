@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36327.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalconAlarm0", "HalconAlarm0.csproj", "{5DF6BD9E-CC36-40AD-82C3-5D26BE35D1E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DF6BD9E-CC36-40AD-82C3-5D26BE35D1E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DF6BD9E-CC36-40AD-82C3-5D26BE35D1E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DF6BD9E-CC36-40AD-82C3-5D26BE35D1E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DF6BD9E-CC36-40AD-82C3-5D26BE35D1E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {993C1D54-C0A0-45C8-A0CF-0F3EBDCD0B83}
+	EndGlobalSection
+EndGlobal
