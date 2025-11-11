@@ -19,15 +19,39 @@ builder.Services.AddDbContext<ContextoHalconAlarm0>(options =>
 // =====================================
 builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<IRolesRepositorio, RolesRepositorio>();
-
-// =====================================
-// 🔹 Configurar controladores y Swagger
-// =====================================
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthRepositorio, AuthRepositorio>();
 
+// =====================================
+// 🔹 Configurar controladores
+// =====================================
+builder.Services.AddControllers();
+
+// =====================================
+// 🔹 Configurar Swagger con JWT
+// =====================================
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "HalconAlarm API", Version = "v1" });
+
+    // Configurar JWT Authorization
+    var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Ingresa 'Bearer' seguido del token JWT"
+    };
+    c.AddSecurityDefinition("Bearer", securityScheme);
+
+    var securityReq = new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        { securityScheme, new string[] { } }
+    };
+    c.AddSecurityRequirement(securityReq);
+});
 
 // =====================================
 // 🔹 Configurar autenticación JWT
@@ -70,7 +94,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// 🔐 Muy importante: el orden
+// 🔐 Muy importante: orden correcto
 app.UseAuthentication();
 app.UseAuthorization();
 

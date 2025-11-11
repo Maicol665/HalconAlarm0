@@ -14,10 +14,10 @@ namespace HalconAlarm0.Repositorios
 {
     public class AuthRepositorio : IAuthRepositorio
     {
-        private readonly ContextoHalconAlarm0 _context;
-        private readonly IConfiguration _configuration;
+        private readonly ContextoHalconAlarm0 _context; // sirve para interactuar con la base de datos
+        private readonly IConfiguration _configuration; // sirve para acceder a la configuración de la aplicación
 
-        public AuthRepositorio(ContextoHalconAlarm0 context, IConfiguration configuration)
+        public AuthRepositorio(ContextoHalconAlarm0 context, IConfiguration configuration) //este es el constructor de la clase que recibe las dependencias necesarias
         {
             _context = context;
             _configuration = configuration;
