@@ -18,8 +18,7 @@ namespace HalconAlarm0.Modelos
         public string CorreoElectronico { get; set; }
         [StringLength(20)]
         public string? Telefono { get; set; }
-        [Required, StringLength(50)]
-        public string TipoUsuario { get; set; }= "Local";
+  
         [Required, StringLength(255)]
         public string ContrasenaHash { get; set; }
         [Required, StringLength(255)]

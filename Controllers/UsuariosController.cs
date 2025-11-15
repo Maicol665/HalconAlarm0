@@ -67,7 +67,6 @@ namespace HalconAlarm0.Controllers
                 if (string.IsNullOrWhiteSpace(dto.Nombres) ||
                     string.IsNullOrWhiteSpace(dto.Apellidos) ||
                     string.IsNullOrWhiteSpace(dto.CorreoElectronico) ||
-                    string.IsNullOrWhiteSpace(dto.TipoUsuario) ||
                     string.IsNullOrWhiteSpace(dto.Contrasena))
                 {
                     return BadRequest("Todos los campos obligatorios deben estar llenos.");
@@ -90,7 +89,6 @@ namespace HalconAlarm0.Controllers
                     Apellidos = dto.Apellidos.Trim(),
                     CorreoElectronico = dto.CorreoElectronico.Trim(),
                     Telefono = dto.Telefono?.Trim(),
-                    TipoUsuario = dto.TipoUsuario.Trim(),
                     ContrasenaHash = hash,
                     ContrasenaSalt = salt,
                     RolID = dto.RolID,

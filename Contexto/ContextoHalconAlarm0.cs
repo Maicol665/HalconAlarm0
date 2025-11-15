@@ -24,7 +24,6 @@ namespace HalconAlarm0.Contexto
                 entity.Property(e => e.Apellidos).IsRequired().HasMaxLength(100);
                 entity.HasIndex(e => e.CorreoElectronico).IsUnique();
                 entity.Property(e => e.Telefono).HasMaxLength(20);
-                entity.Property(e => e.TipoUsuario).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.ContrasenaHash).IsRequired().HasMaxLength(255);
                 entity.Property(e => e.ContrasenaSalt).IsRequired().HasMaxLength(255);
                 entity.Property(e => e.Activo).IsRequired();
