@@ -88,5 +88,11 @@ namespace HalconAlarm0.Repositorios
                 throw new Exception("Error al eliminar el usuario: " + ex.Message);
             }
         }
+        // En UsuariosRepositorio.cs
+        public async Task<Usuarios?> ObtenerUsuarioPorCorreo(string correo)
+        {
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.CorreoElectronico == correo);
+        }
+
     }
 }

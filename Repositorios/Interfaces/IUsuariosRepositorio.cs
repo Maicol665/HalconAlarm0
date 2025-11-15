@@ -9,5 +9,8 @@ namespace HalconAlarm0.Repositorios.Interfaces
         public Task<bool> RegistrarUsuario (Modelos.Usuarios usuarios);
         public Task<bool> ActualizarUsuario (Modelos.Usuarios usuario);
         public Task<bool> EliminarUsuario (Guid usuarioID);
+        // En IUsuariosRepositorio.cs
+        Task<Usuarios?> ObtenerUsuarioPorCorreo(string correo);
+
     }
 }
