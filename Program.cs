@@ -1,6 +1,7 @@
 ﻿using HalconAlarm0.Contexto;
 using HalconAlarm0.Repositorios;
 using HalconAlarm0.Repositorios.Interfaces;
+using HalconAlarm0.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,11 +23,12 @@ builder.Services.AddDbContext<ContextoHalconAlarm0>(options =>
 builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<IRolesRepositorio, RolesRepositorio>();
 builder.Services.AddScoped<IAuthRepositorio, AuthRepositorio>();
-
+builder.Services.AddScoped<PasswordService>();
 // =====================================
 // 🔹 Configurar controladores
 // =====================================
 builder.Services.AddControllers();
+
 
 // =====================================
 // 🔹 Configurar Swagger con JWT

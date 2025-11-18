@@ -14,10 +14,12 @@ namespace HalconAlarm0.Controllers
         private readonly Repositorios.Interfaces.IUsuariosRepositorio _usuariosRepositorio;
         private readonly PasswordService _passwordService;
 
-        public UsuariosController(Repositorios.Interfaces.IUsuariosRepositorio usuariosRepositorio)
+        public UsuariosController(
+            Repositorios.Interfaces.IUsuariosRepositorio usuariosRepositorio,
+            PasswordService passwordService)
         {
             _usuariosRepositorio = usuariosRepositorio;
-            _passwordService = new PasswordService();
+            _passwordService = passwordService;
         }
 
         [HttpGet("obtenerUsuarios")]
@@ -63,7 +65,6 @@ namespace HalconAlarm0.Controllers
         {
             try
             {
-                // 1️⃣ Validar campos obligatorios
                 if (string.IsNullOrWhiteSpace(dto.Nombres) ||
                     string.IsNullOrWhiteSpace(dto.Apellidos) ||
                     string.IsNullOrWhiteSpace(dto.CorreoElectronico) ||
@@ -72,16 +73,13 @@ namespace HalconAlarm0.Controllers
                     return BadRequest("Todos los campos obligatorios deben estar llenos.");
                 }
 
-                // 2️⃣ Verificar si el correo ya existe
                 var usuarioExistente = await _usuariosRepositorio.ObtenerUsuarioPorCorreo(dto.CorreoElectronico);
                 if (usuarioExistente != null)
                     return BadRequest("Usuario ya existente");
 
-                // 3️⃣ Generar salt y hash
                 var salt = _passwordService.GenerarSalt();
                 var hash = _passwordService.GenerarHash(dto.Contrasena, salt);
 
-                // 4️⃣ Crear usuario
                 var usuario = new Usuarios
                 {
                     UsuarioID = Guid.NewGuid(),
@@ -96,7 +94,6 @@ namespace HalconAlarm0.Controllers
                     FechaRegistro = DateTime.Now
                 };
 
-                // 5️⃣ Guardar en base de datos
                 var resultado = await _usuariosRepositorio.RegistrarUsuario(usuario);
                 if (!resultado)
                     return StatusCode(StatusCodes.Status500InternalServerError, "Error registrando usuario");
@@ -105,11 +102,9 @@ namespace HalconAlarm0.Controllers
             }
             catch (Exception ex)
             {
-                // ⚠️ Aquí puedes agregar ex.InnerException?.Message para más detalle si quieres
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al registrar el usuario: " + ex.Message);
             }
         }
-
 
         [HttpPut("ActualizarUsuarios")]
         public async Task<IActionResult> ActualizarUsuario(Usuarios usuario)
