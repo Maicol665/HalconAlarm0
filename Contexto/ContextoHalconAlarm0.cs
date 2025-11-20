@@ -1,44 +1,49 @@
-﻿using System;
-using HalconAlarm0.Modelos;
+﻿using HalconAlarm0.Modelos;
 using Microsoft.EntityFrameworkCore;
 
 namespace HalconAlarm0.Contexto
 {
     public class ContextoHalconAlarm0 : DbContext
     {
-        public ContextoHalconAlarm0(DbContextOptions<ContextoHalconAlarm0> options) : base(options) // este es el constructor que recibe las opciones de configuración y las pasa a la clase base DbContext
+        public ContextoHalconAlarm0(DbContextOptions<ContextoHalconAlarm0> options)
+            : base(options)
         {
         }
+
+        // ============================
+        // 🔹 TABLAS DEL SISTEMA
+        // ============================
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Roles> Roles { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) // este método se utiliza para configurar el modelo de datos
+
+        // ============================
+        // 🔹 TABLAS DE SERVICIOS
+        // ============================
+        public DbSet<Servicios> Servicios { get; set; }
+        public DbSet<ServiciosContratados> ServiciosContratados { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Configuración adicional si es necesario
 
+            // Índice único en Correo Electrónico
+            modelBuilder.Entity<Usuarios>()
+                .HasIndex(u => u.CorreoElectronico)
+                .IsUnique();
 
-            modelBuilder.Entity<Usuarios>(entity =>
-            {
-                entity.HasKey(e => e.UsuarioID);
-                entity.Property(e => e.Nombres).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.Apellidos).IsRequired().HasMaxLength(100);
-                entity.HasIndex(e => e.CorreoElectronico).IsUnique();
-                entity.Property(e => e.Telefono).HasMaxLength(20);
-                entity.Property(e => e.ContrasenaHash).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.ContrasenaSalt).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.Activo).IsRequired();
-                entity.Property(e => e.FechaRegistro).IsRequired();
-                entity.HasOne(e => e.Rol) // configuración de la relación con la entidad Roles 
-                      .WithMany(r => r.Usuarios)
-                      .HasForeignKey(e => e.RolID);
+            // Relación Servicios → ServiciosContratados (1:N)
+            modelBuilder.Entity<ServiciosContratados>()
+                .HasOne(s => s.Servicio)
+                .WithMany(s => s.ServiciosContratados)
+                .HasForeignKey(s => s.ServicioID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-             });
-
-            modelBuilder.Entity<Roles>(entity =>
-            {
-                entity.HasKey(e => e.RolID);
-                entity.Property(e => e.NombreRol).IsRequired().HasMaxLength(50);
-            });
-        }        
+            // Relación Usuarios → ServiciosContratados (1:N)
+            modelBuilder.Entity<ServiciosContratados>()
+                .HasOne<Usuarios>()
+                .WithMany()
+                .HasForeignKey(s => s.UsuarioID)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

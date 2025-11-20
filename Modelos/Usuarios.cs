@@ -5,33 +5,36 @@ using Microsoft.EntityFrameworkCore;
 namespace HalconAlarm0.Modelos
 {
     [Table("Usuarios")]
-    [Index(nameof(CorreoElectronico), IsUnique = true)] // Índice único en CorreoElectronico
+    [Index(nameof(CorreoElectronico), IsUnique = true)]
     public class Usuarios
     {
         [Key]
         public Guid UsuarioID { get; set; }
+
         [Required, StringLength(100)]
-        public string Nombres { get; set; }
+        public required string Nombres { get; set; }
+
         [Required, StringLength(100)]
-        public string Apellidos { get; set; }
+        public required string Apellidos { get; set; }
+
         [Required, StringLength(150)]
-        public string CorreoElectronico { get; set; }
+        public required string CorreoElectronico { get; set; }
+
         [StringLength(20)]
         public string? Telefono { get; set; }
-  
+
         [Required, StringLength(255)]
-        public string ContrasenaHash { get; set; }
+        public required string ContrasenaHash { get; set; }
+
         [Required, StringLength(255)]
-        public string ContrasenaSalt { get; set; }
-        
+        public required string ContrasenaSalt { get; set; }
+
         public bool Activo { get; set; } = true;
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
         public Guid RolID { get; set; }
+
         [ForeignKey(nameof(RolID))]
-
-        public  Roles? Rol { get; set; }
-
-
+        public Roles? Rol { get; set; }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using HalconAlarm0.Contexto;
 using HalconAlarm0.Repositorios;
 using HalconAlarm0.Repositorios.Interfaces;
-using HalconAlarm0.Servicios;
+using HalconAlarm0.ServiciosExternos;
+using HalconAlarm0.ServiciosExternos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace HalconAlarm0.Servicios
+namespace HalconAlarm0.ServiciosExternos
 {
     public class PasswordService
     {

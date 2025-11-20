@@ -1,6 +1,6 @@
 ﻿using HalconAlarm0.DTOs;
 using HalconAlarm0.Modelos;
-using HalconAlarm0.Servicios;
+using HalconAlarm0.ServiciosExternos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -106,22 +106,44 @@ namespace HalconAlarm0.Controllers
             }
         }
 
-        [HttpPut("ActualizarUsuarios")]
-        public async Task<IActionResult> ActualizarUsuario(Usuarios usuario)
+        [HttpPut("actualizar/{id}")]
+        public async Task<IActionResult> ActualizarUsuario(Guid id, [FromBody] ActualizarUsuarioDTO dto)
         {
-            try
-            {
-                var resultado = await _usuariosRepositorio.ActualizarUsuario(usuario);
-                if (!resultado)
-                    return StatusCode(500, "Error al actualizar el usuario.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                return Ok("Usuario actualizado exitosamente");
-            }
-            catch (Exception ex)
+            var usuario = await _usuariosRepositorio.ObtenerUsuarioPorID(id);
+
+            if (usuario == null)
+                return NotFound("Usuario no encontrado.");
+
+            // Actualizar campos permitidos
+            usuario.Nombres = dto.Nombres;
+            usuario.Apellidos = dto.Apellidos;
+            usuario.CorreoElectronico = dto.CorreoElectronico;
+            usuario.Telefono = dto.Telefono;
+            usuario.RolID = dto.RolID;
+
+            var actualizado = await _usuariosRepositorio.ActualizarUsuario(usuario);
+
+            if (!actualizado)
+                return StatusCode(500, "Error al actualizar el usuario.");
+
+            return Ok(new
             {
-                return StatusCode(500, "Error al actualizar el usuario: " + ex.Message);
-            }
+                mensaje = "Usuario actualizado correctamente.",
+                usuario = new
+                {
+                    usuario.UsuarioID,
+                    usuario.Nombres,
+                    usuario.Apellidos,
+                    usuario.CorreoElectronico,
+                    usuario.Telefono,
+                    usuario.RolID
+                }
+            });
         }
+
 
         [HttpDelete("EliminarUsuarios")]
         public async Task<IActionResult> EliminarUsuario(Guid usuarioID)
