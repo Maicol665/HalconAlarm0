@@ -28,6 +28,12 @@ builder.Services.AddScoped<PasswordService>();
 
 builder.Services.AddScoped<IDispositivoRepositorio, DispositivoRepositorio>();
 
+builder.Services.AddScoped<IDispositivosAsignadosRepositorio, DispositivosAsignadosRepositorio>();
+
+
+
+
+
 // =====================================
 // 🔹 Configurar controladores
 // =====================================

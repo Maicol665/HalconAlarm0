@@ -23,7 +23,7 @@ namespace HalconAlarm0.Contexto
         public DbSet<ServiciosContratados> ServiciosContratados { get; set; }
         // tabla de dispositivos
         public DbSet<Dispositivo> Dispositivos { get; set; }
-
+        public DbSet<DispositivosAsignados> DispositivosAsignados { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
