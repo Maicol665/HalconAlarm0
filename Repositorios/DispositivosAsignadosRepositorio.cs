@@ -34,14 +34,41 @@ namespace HalconAlarm0.Repositorios
         {
             await _contexto.SaveChangesAsync();
         }
+
         public async Task<IEnumerable<DispositivosAsignados>> ObtenerPorUsuario(Guid usuarioId)
         {
             return await _contexto.DispositivosAsignados
                 .Where(x => x.UsuarioID == usuarioId)
-                .Include(x => x.Dispositivo)  // TRAE información del dispositivo
+                .Include(x => x.Dispositivo)
                 .ToListAsync();
         }
 
+        // ============================================
+        // NUEVO MÉTODO: Asignar dispositivo (sin errores)
+        // ============================================
+        public async Task<bool> AsignarDispositivo(Guid usuarioId, Guid dispositivoId)
+        {
+            // VALIDAR existencia del usuario
+            var existeUsuario = await _contexto.Usuarios.AnyAsync(u => u.UsuarioID == usuarioId);
 
+            // VALIDAR existencia del dispositivo
+            var existeDispositivo = await _contexto.Dispositivos.AnyAsync(d => d.DispositivoID == dispositivoId);
+
+            if (!existeUsuario || !existeDispositivo)
+                return false;
+
+            var asignacion = new DispositivosAsignados
+            {
+                AsignacionID = Guid.NewGuid(),
+                UsuarioID = usuarioId,
+                DispositivoID = dispositivoId,
+                FechaAsignacion = DateTime.UtcNow
+            };
+
+            await _contexto.DispositivosAsignados.AddAsync(asignacion);
+            await _contexto.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

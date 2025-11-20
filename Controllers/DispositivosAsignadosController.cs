@@ -62,5 +62,46 @@ namespace HalconAlarm0.Controllers
                 });
             }
         }
+
+        // ============================================================
+        // POST: /api/DispositivosAsignados/asignar
+        // ASIGNA un dispositivo a un usuario
+        // ============================================================
+        public class AsignarDispositivoDTO
+        {
+            public Guid UsuarioID { get; set; }
+            public Guid DispositivoID { get; set; }
+        }
+
+        [HttpPost("asignar")]
+
+        public async Task<IActionResult> AsignarDispositivo([FromBody] AsignarDispositivoDTO dto)
+        {
+            try
+            {
+                var resultado = await _repo.AsignarDispositivo(dto.UsuarioID, dto.DispositivoID);
+
+                if (!resultado)
+                {
+                    return BadRequest(new
+                    {
+                        mensaje = "No se pudo asignar el dispositivo. Verifique que el usuario y el dispositivo existan."
+                    });
+                }
+
+                return Ok(new
+                {
+                    mensaje = "Dispositivo asignado correctamente."
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    mensaje = "Error en el servidor",
+                    detalle = ex.Message
+                });
+            }
+        }
     }
 }

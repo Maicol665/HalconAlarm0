@@ -9,5 +9,7 @@ namespace HalconAlarm0.Repositorios.Interfaces
         Task<IEnumerable<DispositivosAsignados>> ObtenerPorUsuario(Guid usuarioId);
         Task CrearAsync(DispositivosAsignados entidad);
         Task GuardarAsync();
+        Task<bool> AsignarDispositivo(Guid usuarioId, Guid dispositivoId);
+
     }
 }

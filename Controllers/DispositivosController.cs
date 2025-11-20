@@ -16,6 +16,19 @@ namespace HalconAlarm0.Controladores
             _repo = repo;
         }
 
+        // Listar todos los dispositivos
+        [HttpGet("listar")]
+        public async Task<IActionResult> ObtenerTodosLosDispositivos()
+        {
+            var dispositivos = await _repo.ObtenerTodos(); // Método que devuelve todos los dispositivos
+            return Ok(dispositivos);
+        }
+
+
+
+
+
+
         // RF14 - Registrar dispositivo
         [HttpPost("registrar")]
         public async Task<IActionResult> RegistrarDispositivo([FromBody] DispositivoCrearDTO dto)

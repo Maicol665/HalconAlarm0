@@ -14,6 +14,12 @@ namespace HalconAlarm0.Repositorios
             _context = context;
         }
 
+        public async Task<IEnumerable<Dispositivo>> ObtenerTodos()
+        {
+            return await _context.Dispositivos.ToListAsync();
+        }
+
+
         public async Task<Dispositivo> CrearDispositivo(Dispositivo dispositivo)
         {
             _context.Dispositivos.Add(dispositivo);
