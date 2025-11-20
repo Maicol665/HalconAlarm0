@@ -25,6 +25,9 @@ builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<IRolesRepositorio, RolesRepositorio>();
 builder.Services.AddScoped<IAuthRepositorio, AuthRepositorio>();
 builder.Services.AddScoped<PasswordService>();
+
+builder.Services.AddScoped<IDispositivoRepositorio, DispositivoRepositorio>();
+
 // =====================================
 // 🔹 Configurar controladores
 // =====================================

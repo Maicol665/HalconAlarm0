@@ -21,6 +21,8 @@ namespace HalconAlarm0.Contexto
         // ============================
         public DbSet<Servicios> Servicios { get; set; }
         public DbSet<ServiciosContratados> ServiciosContratados { get; set; }
+        // tabla de dispositivos
+        public DbSet<Dispositivo> Dispositivos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +46,17 @@ namespace HalconAlarm0.Contexto
                 .WithMany()
                 .HasForeignKey(s => s.UsuarioID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Dispositivo>()
+               .HasKey(d => d.DispositivoID);
+
+            modelBuilder.Entity<Dispositivo>()
+                .HasOne(d => d.Servicio)
+                .WithMany()
+                .HasForeignKey(d => d.ServicioID);
+
+            modelBuilder.Entity<ServiciosContratados>()
+                .HasKey(sc => sc.ContratoID);
         }
     }
 }
