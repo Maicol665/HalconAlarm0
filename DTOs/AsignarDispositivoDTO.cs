@@ -1,8 +1,8 @@
 ﻿namespace HalconAlarm0.DTOs
 {
-    public class ContratarServicioDTO
+    public class AsignarDispositivoDTO
     {
-        public Guid ServicioID { get; set; }
         public Guid UsuarioID { get; set; }
+        public Guid DispositivoID { get; set; }
     }
 }

@@ -5,11 +5,10 @@ using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace HalconAlarm0.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "3.1 Servicios Contratados")]
     [ApiController]
@@ -25,17 +24,16 @@ namespace HalconAlarm0.Controllers
             _context = context;
         }
 
+        // ============================================================
+        // 🔹 SOLO EL ADMINISTRADOR REGISTRA SERVICIOS PARA UN CLIENTE
+        // ============================================================
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] ContratarServicioDTO dto)
         {
             try
             {
-                if (dto == null || dto.ServicioID == Guid.Empty)
-                    return BadRequest("ServicioID es obligatorio.");
-
-                var usuarioIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(usuarioIdString) || !Guid.TryParse(usuarioIdString, out var usuarioID))
-                    return Unauthorized("Usuario no autenticado correctamente.");
+                if (dto == null || dto.ServicioID == Guid.Empty || dto.UsuarioID == Guid.Empty)
+                    return BadRequest("UsuarioID y ServicioID son obligatorios.");
 
                 var servicio = await _context.Servicios
                     .FirstOrDefaultAsync(s => s.ServicioID == dto.ServicioID && s.Activo);
@@ -43,14 +41,18 @@ namespace HalconAlarm0.Controllers
                 if (servicio == null)
                     return BadRequest("Servicio no encontrado o inactivo.");
 
-                var yaExiste = await _repositorio.ExisteContrato(usuarioID, dto.ServicioID);
+                var usuarioExiste = await _context.Usuarios.AnyAsync(u => u.UsuarioID == dto.UsuarioID);
+                if (!usuarioExiste)
+                    return BadRequest("El usuario no existe.");
+
+                var yaExiste = await _repositorio.ExisteContrato(dto.UsuarioID, dto.ServicioID);
                 if (yaExiste)
-                    return Conflict("Ya tienes registrado este servicio.");
+                    return Conflict("Este usuario ya tiene contratado este servicio.");
 
                 var contrato = new ServiciosContratados
                 {
                     ContratoID = Guid.NewGuid(),
-                    UsuarioID = usuarioID,
+                    UsuarioID = dto.UsuarioID,
                     ServicioID = dto.ServicioID,
                     FechaContratacion = DateTime.UtcNow
                 };
@@ -63,6 +65,7 @@ namespace HalconAlarm0.Controllers
                 {
                     mensaje = "Servicio contratado exitosamente",
                     contratoId = contrato.ContratoID,
+                    usuarioId = dto.UsuarioID,
                     servicio = new
                     {
                         servicio.ServicioID,

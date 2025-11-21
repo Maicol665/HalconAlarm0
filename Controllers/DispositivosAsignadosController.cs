@@ -20,12 +20,12 @@ namespace HalconAlarm0.Controllers
         // ============================================================
         // GET: /api/DispositivosAsignados/usuario/{usuarioId}
         // ============================================================
-        [HttpGet("usuario/{usuarioId}")]
-        public async Task<IActionResult> ObtenerPorUsuario(Guid usuarioId)
+        [HttpGet("asignados-al-usuario/{id}")]
+        public async Task<IActionResult> ObtenerAsignadosPorUsuario(Guid id)
         {
             try
             {
-                var asignaciones = await _repo.ObtenerPorUsuario(usuarioId);
+                var asignaciones = await _repo.ObtenerPorUsuario(id);
 
                 if (asignaciones == null || !asignaciones.Any())
                 {
@@ -35,15 +35,12 @@ namespace HalconAlarm0.Controllers
                     });
                 }
 
-                // 🔥 Mapear ENTIDAD → DTO
                 var resultado = asignaciones.Select(a => new DispositivoAsignadoDTO
                 {
                     AsignacionID = a.AsignacionID,
                     UsuarioID = a.UsuarioID,
                     DispositivoID = a.DispositivoID,
                     FechaAsignacion = a.FechaAsignacion,
-
-                    // Datos del dispositivo
                     NombreDispositivo = a.Dispositivo?.NombreDispositivo ?? "",
                     Marca = a.Dispositivo?.Marca ?? "",
                     Serial = a.Dispositivo?.Serial ?? "",
@@ -54,24 +51,14 @@ namespace HalconAlarm0.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new
-                {
-                    mensaje = "Error en el servidor",
-                    detalle = ex.Message
-                });
+                return StatusCode(500, new { mensaje = "Error en el servidor", detalle = ex.Message });
             }
         }
 
+
         // ============================================================
         // POST: /api/DispositivosAsignados/asignar
-        // ASIGNA un dispositivo a un usuario
         // ============================================================
-        public class AsignarDispositivoDTO
-        {
-            public Guid UsuarioID { get; set; }
-            public Guid DispositivoID { get; set; }
-        }
-
         [HttpPost("asignar")]
         public async Task<IActionResult> AsignarDispositivo([FromBody] AsignarDispositivoDTO dto)
         {

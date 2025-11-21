@@ -26,6 +26,14 @@ namespace HalconAlarm0.Controladores
             return Ok(dispositivos);
         }
 
+        // Listar dispositivos por servicio
+
+        [HttpGet("ListarServicioPorId/{id}")]
+        public async Task<IActionResult> ObtenerDispositivosPorServicio(Guid id)
+        {
+            var dispositivos = await _repo.ObtenerPorServicio(id);
+            return Ok(dispositivos);
+        }
 
         // RF14 - Registrar dispositivo
         [HttpPost("registrar")]
@@ -81,15 +89,9 @@ namespace HalconAlarm0.Controladores
             return Ok(new { mensaje = "Dispositivo eliminado correctamente." });
         }
 
+
+
         
 
-        // Listar dispositivos por servicio
-        [HttpGet("por-servicio/{servicioId}")]
-        public async Task<IActionResult> ObtenerDispositivosPorServicio(Guid servicioId)
-        {
-            var dispositivos = await _repo.ObtenerPorServicio(servicioId);
-
-            return Ok(dispositivos);
-        }
     }
 }
