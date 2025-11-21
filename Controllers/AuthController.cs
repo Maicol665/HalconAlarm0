@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HalconAlarm0.Controllers
 {
-
+    
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "1.Login")]
     [ApiController]
     public class AuthController : ControllerBase
     {

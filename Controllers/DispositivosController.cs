@@ -7,6 +7,8 @@ namespace HalconAlarm0.Controladores
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "4.Dispositivos")]
+
     public class DispositivosController : ControllerBase
     {
         private readonly IDispositivoRepositorio _repo;

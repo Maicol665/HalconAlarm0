@@ -9,7 +9,9 @@ namespace HalconAlarm0.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "3.Servicios")]
     [ApiController]
+
     public class ServiciosController : ControllerBase
     {
         private readonly ContextoHalconAlarm0 _context;

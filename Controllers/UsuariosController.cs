@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HalconAlarm0.Controllers
 {
+    
     [Authorize]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "2.Usuarios")]
     [ApiController]
+    
     public class UsuariosController : ControllerBase
     {
         private readonly Repositorios.Interfaces.IUsuariosRepositorio _usuariosRepositorio;

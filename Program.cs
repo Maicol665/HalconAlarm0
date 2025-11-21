@@ -2,10 +2,8 @@
 using HalconAlarm0.Repositorios;
 using HalconAlarm0.Repositorios.Interfaces;
 using HalconAlarm0.ServiciosExternos;
-using HalconAlarm0.ServiciosExternos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -27,64 +25,75 @@ builder.Services.AddScoped<IAuthRepositorio, AuthRepositorio>();
 builder.Services.AddScoped<PasswordService>();
 
 builder.Services.AddScoped<IDispositivoRepositorio, DispositivoRepositorio>();
-
 builder.Services.AddScoped<IDispositivosAsignadosRepositorio, DispositivosAsignadosRepositorio>();
-
-
-
-
 
 // =====================================
 // 🔹 Configurar controladores
 // =====================================
 builder.Services.AddControllers();
 
-
 // =====================================
 // 🔹 Configurar Swagger con JWT
 // =====================================
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "HalconAlarm", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "HalconAlarm", Version = "v1" });
+
+    // ⭐ ORDENAR USANDO EL GroupName
+    c.TagActionsBy(api =>
     {
-        Description = @"JWT Authorization header using the Bearer scheme <br /> <br />
-                        Enter Bearer [space] and then your token in the text input bellow <br /> <br />
-                        Example: 'Bearer 123456abcdefg' <br /> <br />.",
+        if (!string.IsNullOrEmpty(api.GroupName))
+            return new[] { api.GroupName };
+
+        return new[] { api.ActionDescriptor.RouteValues["controller"]! };
+    });
+
+    // ⭐ NECESARIO PARA QUE NO OCULTE TUS CONTROLADORES
+    c.DocInclusionPredicate((docName, apiDesc) => true);
+
+    // JWT CONFIG
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. 
+                        Example: 'Bearer 12345abcdef'",
         Name = "Authorization",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecurityScheme()
+            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference()
+                Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header,
+                In = ParameterLocation.Header
             },
-            new List<string>()
+            Array.Empty<string>()
         }
     });
 });
+
+// =====================================
+// 🔹 CORS
+// =====================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         builder => builder
-            .AllowAnyOrigin()  // Permitir cualquier origen
-            .AllowAnyMethod()  // Permitir cualquier método HTTP
-            .AllowAnyHeader()); // Permitir cualquier cabecera
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
+
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -104,11 +113,13 @@ builder.Services.AddAuthentication(x =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
-
 });
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// =====================================
+// 🔹 PIPELINE
+// =====================================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -121,6 +132,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
+// 🔹 Respuesta custom para 401
 app.Use(async (context, next) =>
 {
     await next();
