@@ -1,4 +1,5 @@
-﻿using HalconAlarm0.Modelos;
+﻿using HalconAlarm0.DTOs;
+using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,23 +35,20 @@ namespace HalconAlarm0.Controllers
                     });
                 }
 
-                // Mapeo de salida con el dispositivo incluido
-                var resultado = asignaciones.Select(x => new
+                // 🔥 Mapear ENTIDAD → DTO
+                var resultado = asignaciones.Select(a => new DispositivoAsignadoDTO
                 {
-                    x.AsignacionID,
-                    x.UsuarioID,
-                    x.DispositivoID,
-                    x.FechaAsignacion,
+                    AsignacionID = a.AsignacionID,
+                    UsuarioID = a.UsuarioID,
+                    DispositivoID = a.DispositivoID,
+                    FechaAsignacion = a.FechaAsignacion,
 
-                    Dispositivo = new
-                    {
-                        x.Dispositivo!.DispositivoID,
-                        x.Dispositivo.NombreDispositivo,
-                        x.Dispositivo.Descripcion,
-                        x.Dispositivo.Marca,
-                        x.Dispositivo.Serial
-                    }
-                });
+                    // Datos del dispositivo
+                    NombreDispositivo = a.Dispositivo?.NombreDispositivo ?? "",
+                    Marca = a.Dispositivo?.Marca ?? "",
+                    Serial = a.Dispositivo?.Serial ?? "",
+                    Descripcion = a.Dispositivo?.Descripcion ?? ""
+                }).ToList();
 
                 return Ok(resultado);
             }
@@ -75,7 +73,6 @@ namespace HalconAlarm0.Controllers
         }
 
         [HttpPost("asignar")]
-
         public async Task<IActionResult> AsignarDispositivo([FromBody] AsignarDispositivoDTO dto)
         {
             try
