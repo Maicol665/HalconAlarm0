@@ -7,7 +7,7 @@ namespace HalconAlarm0.Controladores
 {
     [ApiController]
     [Route("api/[controller]")]
-    [ApiExplorerSettings(GroupName = "4.Dispositivos")]
+    [ApiExplorerSettings(GroupName = "4.0 Dispositivos")]
 
     public class DispositivosController : ControllerBase
     {
@@ -25,10 +25,6 @@ namespace HalconAlarm0.Controladores
             var dispositivos = await _repo.ObtenerTodos(); // Método que devuelve todos los dispositivos
             return Ok(dispositivos);
         }
-
-
-
-
 
 
         // RF14 - Registrar dispositivo
@@ -85,14 +81,7 @@ namespace HalconAlarm0.Controladores
             return Ok(new { mensaje = "Dispositivo eliminado correctamente." });
         }
 
-        // RF16 - Listar dispositivos asignados a un usuario
-        [HttpGet("asignados/usuario/{usuarioId}")]
-        public async Task<IActionResult> ObtenerDispositivosPorUsuario(Guid usuarioId)
-        {
-            var dispositivos = await _repo.ObtenerPorUsuario(usuarioId);
-
-            return Ok(dispositivos);
-        }
+        
 
         // Listar dispositivos por servicio
         [HttpGet("por-servicio/{servicioId}")]

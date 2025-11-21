@@ -11,7 +11,7 @@ namespace HalconAlarm0.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
-    [ApiExplorerSettings(GroupName = "3/1.Servicios Contratados")]
+    [ApiExplorerSettings(GroupName = "3.1 Servicios Contratados")]
     [ApiController]
     public class ServiciosContratadosController : ControllerBase
     {
