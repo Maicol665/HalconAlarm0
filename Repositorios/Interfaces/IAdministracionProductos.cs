@@ -9,5 +9,7 @@ namespace HalconAlarm0.Repositorios.Interfaces
         Task<bool> CrearProducto(Productos producto);
         Task<bool> ModificarProducto(Guid id, Productos productoActualizado);
         Task<bool> EliminarProducto(Guid id);
+        Task<IEnumerable<Productos>> FiltrarProductos(string? nombre, string? marca, string? modelo);
+
     }
 }

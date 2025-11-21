@@ -61,5 +61,22 @@ namespace HalconAlarm0.Repositorios
             _context.Productos.Remove(producto);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<IEnumerable<Productos>> FiltrarProductos(string? nombre, string? marca, string? modelo)
+        {
+            var query = _context.Productos.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(nombre))
+                query = query.Where(p => p.NombreProducto.Contains(nombre));
+
+            if (!string.IsNullOrWhiteSpace(marca))
+                query = query.Where(p => p.Marca.Contains(marca));
+
+            if (!string.IsNullOrWhiteSpace(modelo))
+                query = query.Where(p => p.Modelo.Contains(modelo));
+
+            return await query.ToListAsync();
+        }
+
     }
 }

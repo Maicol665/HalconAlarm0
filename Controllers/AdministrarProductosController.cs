@@ -118,5 +118,25 @@ namespace HalconAlarm0.Controllers
 
             return NoContent();
         }
+
+
+            [HttpGet("filtrar")]
+                public async Task<IActionResult> Filtrar(
+            [FromQuery] string? nombre,
+            [FromQuery] string? marca,
+            [FromQuery] string? modelo)
+        {
+            var productos = await _repositorio.FiltrarProductos(nombre, marca, modelo);
+
+            return Ok(productos.Select(p => new ProductoDto
+            {
+                ProductoID = p.ProductoID,
+                NombreProducto = p.NombreProducto,
+                Marca = p.Marca,
+                Modelo = p.Modelo,
+                ImagenURL = p.ImagenURL
+            }));
+        }
+
     }
 }
