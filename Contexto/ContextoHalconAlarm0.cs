@@ -24,6 +24,9 @@ namespace HalconAlarm0.Contexto
         // tabla de dispositivos
         public DbSet<Dispositivo> Dispositivos { get; set; }
         public DbSet<DispositivosAsignados> DispositivosAsignados { get; set; }
+
+        public DbSet<Productos> Productos { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -57,6 +60,32 @@ namespace HalconAlarm0.Contexto
 
             modelBuilder.Entity<ServiciosContratados>()
                 .HasKey(sc => sc.ContratoID);
+
+            modelBuilder.Entity<Productos>(entity =>
+            {
+                entity.HasKey(e => e.ProductoID);
+
+                entity.Property(e => e.ProductoID)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.NombreProducto)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Marca)
+                    .HasMaxLength(100);
+
+                // Modelo es NVARCHAR(100)
+                entity.Property(e => e.Modelo)
+                    .HasMaxLength(100);
+
+                // ImagenURL es NVARCHAR(255)
+                entity.Property(e => e.ImagenURL)
+                    .HasMaxLength(255);
+            });
+
+
+
         }
     }
 }

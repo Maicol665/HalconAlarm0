@@ -27,6 +27,17 @@ builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<IDispositivoRepositorio, DispositivoRepositorio>();
 builder.Services.AddScoped<IDispositivosAsignadosRepositorio, DispositivosAsignadosRepositorio>();
 builder.Services.AddScoped<IServiciosContratadosRepositorio, ServiciosContratadosRepositorio>();
+builder.Services.AddScoped<IAdministracionProductos, AdministracionProductos>();
+
+// Otros servicios
+builder.Services.AddDbContext<ContextoHalconAlarm0>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 
 // =====================================
