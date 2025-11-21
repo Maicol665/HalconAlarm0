@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace HalconAlarm0.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "3.1 Servicios Contratados")]
     [ApiController]
@@ -78,6 +80,84 @@ namespace HalconAlarm0.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Error al registrar el servicio contratado: " + ex.Message);
+            }
+        }
+
+        // ============================================================
+        [HttpGet("usuario/{usuarioId}")]
+        public async Task<IActionResult> ObtenerServiciosPorUsuario(Guid usuarioId)
+        {
+            try
+            {
+                if (usuarioId == Guid.Empty)
+                    return BadRequest("UsuarioID es obligatorio.");
+                var serviciosContratados = await _repositorio.ObtenerPorUsuario(usuarioId);
+                if (serviciosContratados == null || !serviciosContratados.Any())
+                    return NotFound("No se encontraron servicios contratados para este usuario.");
+                var resultado = serviciosContratados.Select(sc => new
+                {
+                    sc.ContratoID,
+                    sc.FechaContratacion,
+                    Servicio = new
+                    {
+                        sc.Servicio!.ServicioID,
+                        sc.Servicio.NombreServicio,
+                        sc.Servicio.TipoServicio,
+                        sc.Servicio.Descripcion
+                    }
+                });
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error al obtener los servicios contratados: " + ex.Message);
+            }
+        }
+        // ============================================================
+        [HttpDelete("eliminar/{contratoId}")]
+        public async Task<IActionResult> EliminarContrato(Guid contratoId)
+        {
+            try
+            {
+                if (contratoId == Guid.Empty)
+                    return BadRequest("ContratoID es obligatorio.");
+                var eliminado = await _repositorio.EliminarContrato(contratoId);
+                if (!eliminado)
+                    return NotFound("Contrato no encontrado o ya eliminado.");
+                return Ok(new { mensaje = "Contrato eliminado exitosamente." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error al eliminar el contrato: " + ex.Message);
+            }
+
+
+        }
+
+        [HttpPost] 
+        [Route("ObtenerTodosLosContratos")]
+        public async Task<IActionResult> ObtenerTodosLosContratos()
+        {
+            try
+            {
+                var contratos = await _repositorio.ObtenerTodosLosContratos();
+                var resultado = contratos.Select(sc => new
+                {
+                    sc.ContratoID,
+                    sc.FechaContratacion,
+                    Servicio = new
+                    {
+                        sc.Servicio!.ServicioID,
+                        sc.Servicio.NombreServicio,
+                        sc.Servicio.TipoServicio,
+                        sc.Servicio.Descripcion
+                    }
+                });
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error al obtener todos los contratos: " + ex.Message);
             }
         }
     }

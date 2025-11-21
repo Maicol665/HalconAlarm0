@@ -25,5 +25,31 @@ namespace HalconAlarm0.Repositorios
             await _context.ServiciosContratados.AddAsync(contrato);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<List<ServiciosContratados>> ObtenerPorUsuario(Guid usuarioId)
+        {
+            return await _context.ServiciosContratados
+                .Where(s => s.UsuarioID == usuarioId)
+                .Include(s => s.Servicio)
+                .ToListAsync();
+        }
+
+        public async Task<bool> EliminarContrato(Guid contratoId)
+        {
+            var contrato = await _context.ServiciosContratados.FindAsync(contratoId);
+            if (contrato == null)
+            {
+                return false;
+            }
+            _context.ServiciosContratados.Remove(contrato);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<ServiciosContratados>> ObtenerTodosLosContratos()
+        {
+            return await _context.ServiciosContratados
+                .Include(s => s.Servicio)
+                .ToListAsync();
+        }
     }
 }
