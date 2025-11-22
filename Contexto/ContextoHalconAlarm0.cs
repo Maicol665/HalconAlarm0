@@ -27,6 +27,9 @@ namespace HalconAlarm0.Contexto
 
         public DbSet<Productos> Productos { get; set; } = null!;
 
+        public DbSet<Contacto> Contactos { get; set; }
+    
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -84,6 +87,54 @@ namespace HalconAlarm0.Contexto
                     .HasMaxLength(255);
             });
 
+            // -----------------------------
+            // CONFIGURACIÓN Contactos
+            // -----------------------------
+            modelBuilder.Entity<Contacto>(entity =>
+            {
+                entity.HasKey(e => e.ContactoID);
+
+                entity.Property(e => e.ContactoID)
+                      .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Nombre)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(e => e.Apellidos)
+                      .HasMaxLength(100);
+
+                entity.Property(e => e.CorreoElectronico)
+                      .IsRequired()
+                      .HasMaxLength(150);
+
+                entity.HasIndex(e => e.CorreoElectronico)
+                      .HasDatabaseName("IX_Contactos_CorreoElectronico");
+
+                entity.Property(e => e.Ciudad)
+                      .HasMaxLength(100);
+
+                entity.Property(e => e.Telefono)
+                      .HasMaxLength(20);
+
+                // Fecha por defecto en SQL Server
+                entity.Property(e => e.FechaContacto)
+                      .HasDefaultValueSql("GETDATE()");
+
+                // FKs opcionales a Servicios y Productos
+                entity.HasOne(e => e.Servicio)
+                      .WithMany()
+                      .HasForeignKey(e => e.ServicioID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Producto)
+                      .WithMany()
+                      .HasForeignKey(e => e.ProductoID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                // CHECK para que al menos uno (ServicioID o ProductoID) sea no nulo
+                entity.HasCheckConstraint("CHK_Contactos_AlMenosUno", "(ServicioID IS NOT NULL OR ProductoID IS NOT NULL)");
+            });
 
 
         }
