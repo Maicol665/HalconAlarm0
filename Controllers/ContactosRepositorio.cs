@@ -62,5 +62,17 @@ namespace HalconAlarm0.Controllers
             if (contacto == null) return NotFound();
             return Ok(contacto);
         }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Eliminar(Guid id)
+        {
+            var eliminado = await _repositorio.EliminarContactoAsync(id);
+
+            if (!eliminado)
+                return NotFound("Contacto no encontrado");
+
+            return Ok(new { mensaje = "Contacto eliminado" });
+        }
+
     }
 }

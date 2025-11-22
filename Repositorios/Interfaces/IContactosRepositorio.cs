@@ -9,5 +9,6 @@ namespace HalconAlarm0.Repositorios.Interfaces
         Task<Contacto> RegistrarContactoAsync(RegistrarContactoDTO dto);
         Task<IEnumerable<Contacto>> ListarContactosAsync(int? take = null, int? skip = null);
         Task<Contacto?> ObtenerPorIdAsync(Guid contactoId);
+        Task<bool> EliminarContactoAsync(Guid id);
     }
 }

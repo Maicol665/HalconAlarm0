@@ -63,5 +63,18 @@ namespace HalconAlarm0.Repositorios
                                  .Include(c => c.Producto)
                                  .FirstOrDefaultAsync(c => c.ContactoID == contactoId);
         }
+
+        public async Task<bool> EliminarContactoAsync(Guid id)
+        {
+            var contacto = await _context.Contactos.FindAsync(id);
+
+            if (contacto == null)
+                return false;
+
+            _context.Contactos.Remove(contacto);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }
