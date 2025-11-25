@@ -3,10 +3,8 @@ using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace HalconAlarm0.Controllers
 {
-    
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "1.Login")]
     [ApiController]
@@ -26,21 +24,25 @@ namespace HalconAlarm0.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            if (request == null)
+                return BadRequest("La solicitud está vacía.");
+
             try
             {
                 var token = await _authRepositorio.LoginAsync(request);
 
-                if (token == null)
-                    return Unauthorized("Correo o contraseña incorrectos");
+                if (string.IsNullOrEmpty(token))
+                    return Unauthorized("Correo o contraseña incorrectos.");
 
                 return Ok(new { Token = token });
             }
             catch (Exception ex)
             {
-                // Aquí puedes loguear el error si quieres
-                return StatusCode(500, $"Ocurrió un error al procesar la solicitud: {ex.Message}");
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Ocurrió un error al procesar la solicitud: {ex.Message}"
+                );
             }
         }
-
     }
 }

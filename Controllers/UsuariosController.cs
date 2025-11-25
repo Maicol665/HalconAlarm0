@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HalconAlarm0.Controllers
 {
-    
     [Authorize]
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "2.Usuarios")]
     [ApiController]
-    
     public class UsuariosController : ControllerBase
     {
         private readonly Repositorios.Interfaces.IUsuariosRepositorio _usuariosRepositorio;
@@ -25,7 +23,9 @@ namespace HalconAlarm0.Controllers
             _passwordService = passwordService;
         }
 
+        // SOLO ADMIN
         [HttpGet("obtenerUsuarios")]
+        [Authorize(Roles = "Usuario Administrador")]
         public async Task<IActionResult> ObtenerUsuarios()
         {
             try
@@ -38,16 +38,19 @@ namespace HalconAlarm0.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error al obtener los usuarios: " + ex.Message);
+                return StatusCode(500, $"Error al obtener los usuarios: {ex.Message}");
             }
         }
 
+        // SOLO ADMIN
         [HttpGet("obtenerUsuariosPorID")]
+        [Authorize(Roles = "Usuario Administrador")]
         public async Task<IActionResult> ObtenerUsuarioPorID(Guid usuarioID)
         {
             try
             {
                 var usuario = await _usuariosRepositorio.ObtenerUsuarioPorID(usuarioID);
+
                 if (usuario == null)
                     return NotFound("Usuario no encontrado.");
 
@@ -55,19 +58,20 @@ namespace HalconAlarm0.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error al obtener el usuario: " + ex.Message);
+                return StatusCode(500, $"Error al obtener el usuario: {ex.Message}");
             }
         }
 
+        // REGISTRO ES PUBLICO
         [HttpPost("RegistrarUsuarios")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> RegistrarUsuario(RegistroUsuarioDTO dto)
+        public async Task<IActionResult> RegistrarUsuario([FromBody] RegistroUsuarioDTO dto)
         {
             try
             {
+                if (dto == null)
+                    return BadRequest("La solicitud está vacía.");
+
                 if (string.IsNullOrWhiteSpace(dto.Nombres) ||
                     string.IsNullOrWhiteSpace(dto.Apellidos) ||
                     string.IsNullOrWhiteSpace(dto.CorreoElectronico) ||
@@ -78,7 +82,7 @@ namespace HalconAlarm0.Controllers
 
                 var usuarioExistente = await _usuariosRepositorio.ObtenerUsuarioPorCorreo(dto.CorreoElectronico);
                 if (usuarioExistente != null)
-                    return BadRequest("Usuario ya existente");
+                    return BadRequest("Usuario ya existente.");
 
                 var salt = _passwordService.GenerarSalt();
                 var hash = _passwordService.GenerarHash(dto.Contrasena, salt);
@@ -99,19 +103,24 @@ namespace HalconAlarm0.Controllers
 
                 var resultado = await _usuariosRepositorio.RegistrarUsuario(usuario);
                 if (!resultado)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error registrando usuario");
+                    return StatusCode(500, "Error registrando usuario.");
 
-                return Ok("Usuario registrado exitosamente");
+                return Ok("Usuario registrado exitosamente.");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error al registrar el usuario: " + ex.Message);
+                return StatusCode(500, $"Error al registrar el usuario: {ex.Message}");
             }
         }
 
+        // SOLO ADMIN
         [HttpPut("actualizar/{id}")]
+        [Authorize(Roles = "Usuario Administrador")]
         public async Task<IActionResult> ActualizarUsuario(Guid id, [FromBody] ActualizarUsuarioDTO dto)
         {
+            if (dto == null)
+                return BadRequest("La solicitud está vacía.");
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -120,7 +129,6 @@ namespace HalconAlarm0.Controllers
             if (usuario == null)
                 return NotFound("Usuario no encontrado.");
 
-            // Actualizar campos permitidos
             usuario.Nombres = dto.Nombres;
             usuario.Apellidos = dto.Apellidos;
             usuario.CorreoElectronico = dto.CorreoElectronico;
@@ -147,8 +155,9 @@ namespace HalconAlarm0.Controllers
             });
         }
 
-
+        // SOLO ADMIN
         [HttpDelete("EliminarUsuarios")]
+        [Authorize(Roles = "Usuario Administrador")]
         public async Task<IActionResult> EliminarUsuario(Guid usuarioID)
         {
             try
@@ -157,11 +166,11 @@ namespace HalconAlarm0.Controllers
                 if (!resultado)
                     return StatusCode(500, "Error al eliminar el usuario.");
 
-                return Ok("Usuario eliminado exitosamente");
+                return Ok("Usuario eliminado exitosamente.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error al eliminar el usuario: " + ex.Message);
+                return StatusCode(500, $"Error al eliminar el usuario: {ex.Message}");
             }
         }
     }
