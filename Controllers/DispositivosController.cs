@@ -18,9 +18,9 @@ namespace HalconAlarm0.Controladores
             _repo = repo;
         }
 
-        // ============================================================
+        
         // LISTAR TODOS LOS DISPOSITIVOS (PUBLICO)
-        // ============================================================
+       
         [AllowAnonymous]
         [HttpGet("listar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,9 +32,9 @@ namespace HalconAlarm0.Controladores
             return Ok(dispositivos);
         }
 
-        // ============================================================
+        
         // LISTAR POR SERVICIO (PUBLICO)
-        // ============================================================
+        
         [AllowAnonymous]
         [HttpGet("ListarServicioPorId/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -46,9 +46,9 @@ namespace HalconAlarm0.Controladores
             return Ok(dispositivos);
         }
 
-        // ============================================================
+        
         // RF14 - REGISTRAR DISPOSITIVO (Admin)
-        // ============================================================
+        
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("registrar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,9 +73,8 @@ namespace HalconAlarm0.Controladores
             return Ok(new { mensaje = "Equipo registrado correctamente." });
         }
 
-        // ============================================================
         // RF15 - MODIFICAR DISPOSITIVO (Admin)
-        // ============================================================
+        
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("actualizar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -100,9 +99,9 @@ namespace HalconAlarm0.Controladores
             return Ok(new { mensaje = "Dispositivo actualizado correctamente." });
         }
 
-        // ============================================================
+        
         // RF15 - ELIMINAR DISPOSITIVO (Admin)
-        // ============================================================
+        
         [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

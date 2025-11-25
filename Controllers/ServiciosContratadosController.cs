@@ -26,9 +26,9 @@ namespace HalconAlarm0.Controllers
             _context = context;
         }
 
-        // ============================================================
-        // 🔹 SOLO EL ADMINISTRADOR REGISTRA SERVICIOS PARA UN CLIENTE
-        // ============================================================
+        
+        // SOLO EL ADMINISTRADOR REGISTRA SERVICIOS PARA UN CLIENTE
+        
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] ContratarServicioDTO dto)
