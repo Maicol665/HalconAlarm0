@@ -2,13 +2,13 @@
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HalconAlarm0.Controladores
 {
     [ApiController]
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "4.0 Dispositivos")]
-
     public class DispositivosController : ControllerBase
     {
         private readonly IDispositivoRepositorio _repo;
@@ -18,16 +18,21 @@ namespace HalconAlarm0.Controladores
             _repo = repo;
         }
 
-        // Listar todos los dispositivos
+        // ============================================================
+        // LISTAR TODOS LOS DISPOSITIVOS (PUBLICO)
+        // ============================================================
+        [AllowAnonymous]
         [HttpGet("listar")]
         public async Task<IActionResult> ObtenerTodosLosDispositivos()
         {
-            var dispositivos = await _repo.ObtenerTodos(); // Método que devuelve todos los dispositivos
+            var dispositivos = await _repo.ObtenerTodos();
             return Ok(dispositivos);
         }
 
-        // Listar dispositivos por servicio
-
+        // ============================================================
+        // LISTAR POR SERVICIO (PUBLICO)
+        // ============================================================
+        [AllowAnonymous]
         [HttpGet("ListarServicioPorId/{id}")]
         public async Task<IActionResult> ObtenerDispositivosPorServicio(Guid id)
         {
@@ -35,7 +40,10 @@ namespace HalconAlarm0.Controladores
             return Ok(dispositivos);
         }
 
-        // RF14 - Registrar dispositivo
+        // ============================================================
+        // RF14 - REGISTRAR DISPOSITIVO (Admin, Tecnico)
+        // ============================================================
+        [Authorize(Roles = "Admin,Tecnico")]
         [HttpPost("registrar")]
         public async Task<IActionResult> RegistrarDispositivo([FromBody] DispositivoCrearDTO dto)
         {
@@ -56,7 +64,10 @@ namespace HalconAlarm0.Controladores
             return Ok(new { mensaje = "Equipo registrado correctamente." });
         }
 
-        // RF15 - Modificar dispositivo
+        // ============================================================
+        // RF15 - MODIFICAR DISPOSITIVO (Admin, Tecnico)
+        // ============================================================
+        [Authorize(Roles = "Admin,Tecnico")]
         [HttpPut("actualizar/{id}")]
         public async Task<IActionResult> ActualizarDispositivo(Guid id, [FromBody] DispositivoActualizarDTO dto)
         {
@@ -77,7 +88,10 @@ namespace HalconAlarm0.Controladores
             return Ok(new { mensaje = "Dispositivo actualizado correctamente." });
         }
 
-        // RF15 - Eliminar dispositivo
+        // ============================================================
+        // RF15 - ELIMINAR DISPOSITIVO (Admin, Tecnico)
+        // ============================================================
+        [Authorize(Roles = "Admin,Tecnico")]
         [HttpDelete("eliminar/{id}")]
         public async Task<IActionResult> EliminarDispositivo(Guid id)
         {
@@ -88,10 +102,5 @@ namespace HalconAlarm0.Controladores
 
             return Ok(new { mensaje = "Dispositivo eliminado correctamente." });
         }
-
-
-
-        
-
     }
 }
