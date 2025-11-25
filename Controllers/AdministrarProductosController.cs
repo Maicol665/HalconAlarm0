@@ -3,6 +3,7 @@ using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace HalconAlarm0.Controllers
 {
     [Route("api/[controller]")]
