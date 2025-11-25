@@ -1,6 +1,7 @@
 ﻿using HalconAlarm0.DTOs;
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HalconAlarm0.Controllers
@@ -16,6 +17,7 @@ namespace HalconAlarm0.Controllers
             _repositorio = repositorio;
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("listar")]
         public async Task<IActionResult> Listar()
         {
@@ -23,6 +25,7 @@ namespace HalconAlarm0.Controllers
             return Ok(solicitudes);
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPorId(Guid id)
         {
@@ -34,9 +37,8 @@ namespace HalconAlarm0.Controllers
             return Ok(solicitud);
         }
 
-        // ===============================
-        // 🔥 Actualizar Estado (con DTO)
-        // ===============================
+        
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("actualizar-estado/{id}")]
         public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] ActualizarEstadoDTO dto)
         {

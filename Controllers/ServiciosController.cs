@@ -20,7 +20,7 @@ namespace HalconAlarm0.Controllers
         {
             _context = context;
         }
-
+        [AllowAnonymous]
         [HttpGet("listar")]
         public async Task<IActionResult> ListarServicios()
         {
@@ -28,8 +28,8 @@ namespace HalconAlarm0.Controllers
             return Ok(servicios);
         }
 
-        [HttpPost("crear")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Usuario Administrador")]
+        [HttpPost("crear")]  
         public async Task<IActionResult> CrearServicio([FromBody] CrearServicioDTO dto)
         {
             try
@@ -62,6 +62,7 @@ namespace HalconAlarm0.Controllers
             }
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("modificar/{id}")]
         public async Task<IActionResult> ModificarServicio(Guid id, ModificarServicioDTO dto)
         {
@@ -80,6 +81,7 @@ namespace HalconAlarm0.Controllers
             return Ok("Servicio modificado correctamente.");
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPatch("estado/{id}")]
         public async Task<IActionResult> CambiarEstadoServicio(Guid id, [FromQuery] bool activo)
         {
@@ -108,6 +110,7 @@ namespace HalconAlarm0.Controllers
             }
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{id}")]
         public async Task<IActionResult> EliminarServicio(Guid id)
         {

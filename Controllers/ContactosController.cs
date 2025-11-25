@@ -24,7 +24,7 @@ namespace HalconAlarm0.Controllers
             _logger = logger;
         }
 
-        // 📌 Público – cualquier usuario puede registrar una solicitud (RF21)
+        // Público – cualquier usuario puede registrar una solicitud (RF21)
         [AllowAnonymous]
         [HttpPost("registrar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -75,9 +75,9 @@ namespace HalconAlarm0.Controllers
             }
         }
 
-        // 🔒 Solo Admin y Asesor pueden ver la lista completa
-        [Authorize(Roles = "Admin,Asesor")]
-        [HttpGet]
+        // Solo Admin puede ver la lista completa
+        [Authorize(Roles = "Usuario Administrador")]
+        [HttpGet("ListarContactos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -87,8 +87,8 @@ namespace HalconAlarm0.Controllers
             return Ok(lista);
         }
 
-        // 🔒 Solo Admin y Asesor pueden consultar contacto por ID
-        [Authorize(Roles = "Admin,Asesor")]
+        // Solo Admin pueden consultar contacto por ID
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -100,8 +100,8 @@ namespace HalconAlarm0.Controllers
             return Ok(contacto);
         }
 
-        // 🔒 Solo Admin puede eliminar contactos
-        [Authorize(Roles = "Admin")]
+        // Solo Admin puede eliminar contactos
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

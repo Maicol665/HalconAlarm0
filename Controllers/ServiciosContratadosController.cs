@@ -29,6 +29,7 @@ namespace HalconAlarm0.Controllers
         // ============================================================
         // 🔹 SOLO EL ADMINISTRADOR REGISTRA SERVICIOS PARA UN CLIENTE
         // ============================================================
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] ContratarServicioDTO dto)
         {
@@ -83,7 +84,8 @@ namespace HalconAlarm0.Controllers
             }
         }
 
-        // ============================================================
+        // solo admin
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("usuario/{usuarioId}")]
         public async Task<IActionResult> ObtenerServiciosPorUsuario(Guid usuarioId)
         {
@@ -114,6 +116,7 @@ namespace HalconAlarm0.Controllers
             }
         }
         // ============================================================
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{contratoId}")]
         public async Task<IActionResult> EliminarContrato(Guid contratoId)
         {
@@ -134,6 +137,7 @@ namespace HalconAlarm0.Controllers
 
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPost] 
         [Route("ObtenerTodosLosContratos")]
         public async Task<IActionResult> ObtenerTodosLosContratos()

@@ -24,8 +24,9 @@ namespace HalconAlarm0.Controllers
         }
 
         // SOLO ADMIN
-        [HttpGet("obtenerUsuarios")]
         [Authorize(Roles = "Usuario Administrador")]
+        [HttpGet("obtenerUsuarios")]
+        
         public async Task<IActionResult> ObtenerUsuarios()
         {
             try
@@ -43,8 +44,9 @@ namespace HalconAlarm0.Controllers
         }
 
         // SOLO ADMIN
-        [HttpGet("obtenerUsuariosPorID")]
         [Authorize(Roles = "Usuario Administrador")]
+        [HttpGet("obtenerUsuariosPorID")]
+        
         public async Task<IActionResult> ObtenerUsuarioPorID(Guid usuarioID)
         {
             try
@@ -63,8 +65,9 @@ namespace HalconAlarm0.Controllers
         }
 
         // REGISTRO ES PUBLICO
-        [HttpPost("RegistrarUsuarios")]
         [AllowAnonymous]
+        [HttpPost("RegistrarUsuarios")]
+        
         public async Task<IActionResult> RegistrarUsuario([FromBody] RegistroUsuarioDTO dto)
         {
             try
@@ -114,8 +117,9 @@ namespace HalconAlarm0.Controllers
         }
 
         // SOLO ADMIN
-        [HttpPut("actualizar/{id}")]
         [Authorize(Roles = "Usuario Administrador")]
+        [HttpPut("actualizar/{id}")]
+        
         public async Task<IActionResult> ActualizarUsuario(Guid id, [FromBody] ActualizarUsuarioDTO dto)
         {
             if (dto == null)
@@ -156,8 +160,9 @@ namespace HalconAlarm0.Controllers
         }
 
         // SOLO ADMIN
-        [HttpDelete("EliminarUsuarios")]
         [Authorize(Roles = "Usuario Administrador")]
+        [HttpDelete("EliminarUsuarios")]
+        
         public async Task<IActionResult> EliminarUsuario(Guid usuarioID)
         {
             try

@@ -17,8 +17,8 @@ namespace HalconAlarm0.Controllers
             _repositorio = repositorio;
         }
 
-        // ✔ CUALQUIER USUARIO LOGUEADO
-        [Authorize]
+        // CUALQUIER USUARIO LOGUEADO
+        [AllowAnonymous]
         [HttpGet("listar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -37,8 +37,8 @@ namespace HalconAlarm0.Controllers
             }));
         }
 
-        // ✔ CUALQUIER USUARIO LOGUEADO
-        [Authorize]
+        // CUALQUIER USUARIO LOGUEADO
+        [AllowAnonymous]
         [HttpGet("listarPorId/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -58,7 +58,7 @@ namespace HalconAlarm0.Controllers
             });
         }
 
-        // ✔ SOLO ADMIN
+        // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("crear")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -85,7 +85,7 @@ namespace HalconAlarm0.Controllers
             return CreatedAtAction(nameof(ObtenerProducto), new { id = producto.ProductoID }, producto);
         }
 
-        // ✔ SOLO ADMIN
+        // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("modificar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -111,7 +111,7 @@ namespace HalconAlarm0.Controllers
             return NoContent();
         }
 
-        // ✔ SOLO ADMIN
+        // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -125,8 +125,8 @@ namespace HalconAlarm0.Controllers
             return NoContent();
         }
 
-        // ✔ CUALQUIER USUARIO LOGUEADO
-        [Authorize]
+        // CUALQUIER USUARIO LOGUEADO
+        [AllowAnonymous]
         [HttpGet("filtrar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

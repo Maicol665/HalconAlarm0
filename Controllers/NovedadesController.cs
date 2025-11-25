@@ -1,6 +1,7 @@
 ﻿using HalconAlarm0.DTOs;
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HalconAlarm0.Controllers
@@ -18,6 +19,7 @@ namespace HalconAlarm0.Controllers
             _repoHistorial = repoHistorial;
         }
 
+        [Authorize]
         [HttpPost("registrar")]
         public async Task<IActionResult> RegistrarNovedad([FromBody] NovedadCrearDTO dto)
         {
@@ -34,6 +36,7 @@ namespace HalconAlarm0.Controllers
             return Ok(new { mensaje = "Novedad registrada", novedad });
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("actualizar-estado/{id}")]
         public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] NovedadEstadoDTO dto)
         {
@@ -45,6 +48,7 @@ namespace HalconAlarm0.Controllers
             return Ok("Estado actualizado correctamente");
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("historial/{id}")]
         public async Task<IActionResult> ObtenerHistorial(Guid id)
         {
@@ -52,6 +56,7 @@ namespace HalconAlarm0.Controllers
             return Ok(historial);
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("listar")]
         public async Task<IActionResult> ListarNovedades()
         {
@@ -59,6 +64,7 @@ namespace HalconAlarm0.Controllers
             return Ok(novedades);
         }
 
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPorId(Guid id)
         {

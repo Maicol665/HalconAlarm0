@@ -18,11 +18,8 @@ namespace HalconAlarm0.Controllers
             _repo = repo;
         }
 
-        // ============================================================
-        // GET: /api/DispositivosAsignados/asignados-al-usuario/{id}
-        // Solo Admin y Tecnico
-        // ============================================================
-        [Authorize(Roles = "Admin,Tecnico")]
+        
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("asignados-al-usuario/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -62,11 +59,9 @@ namespace HalconAlarm0.Controllers
         }
 
 
-        // ============================================================
-        // POST: /api/DispositivosAsignados/asignar
-        // Solo Admin y Tecnico
-        // ============================================================
-        [Authorize(Roles = "Admin,Tecnico")]
+        
+        // Solo Admin     
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("asignar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
