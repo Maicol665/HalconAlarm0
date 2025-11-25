@@ -30,16 +30,8 @@ builder.Services.AddScoped<IServiciosContratadosRepositorio, ServiciosContratado
 builder.Services.AddScoped<IAdministracionProductos, AdministracionProductos>();
 builder.Services.AddScoped<IContactosRepositorio, ContactosRepositorio>();
 builder.Services.AddScoped<ISolicitudesCotizacionRepositorio, SolicitudesCotizacionRepositorio>();
-// Otros servicios
-builder.Services.AddDbContext<ContextoHalconAlarm0>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
+builder.Services.AddScoped<INovedadesRepositorio, NovedadesRepositorio>();
+builder.Services.AddScoped<IHistorialNovedadesRepositorio, HistorialNovedadesRepositorio>();
 
 // =====================================
 // 🔹 Configurar controladores
@@ -47,14 +39,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 // =====================================
-// 🔹 Configurar Swagger con JWT
+// 🔹 Swagger con configuración de JWT
 // =====================================
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HalconAlarm", Version = "v1" });
 
-    // ⭐ ORDENAR USANDO EL GroupName
     c.TagActionsBy(api =>
     {
         if (!string.IsNullOrEmpty(api.GroupName))
@@ -63,10 +54,8 @@ builder.Services.AddSwaggerGen(c =>
         return new[] { api.ActionDescriptor.RouteValues["controller"]! };
     });
 
-    // ⭐ NECESARIO PARA QUE NO OCULTE TUS CONTROLADORES
     c.DocInclusionPredicate((docName, apiDesc) => true);
 
-    // JWT CONFIG
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme. 
@@ -106,6 +95,9 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
+// =====================================
+// 🔹 Configuración JWT
+// =====================================
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 
 builder.Services.AddAuthentication(x =>
@@ -146,7 +138,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
-// 🔹 Respuesta custom para 401
+// 🔹 Interceptar respuesta 401 y enviar mensaje custom
 app.Use(async (context, next) =>
 {
     await next();

@@ -21,7 +21,6 @@ namespace HalconAlarm0.Contexto
         // ============================
         public DbSet<Servicios> Servicios { get; set; }
         public DbSet<ServiciosContratados> ServiciosContratados { get; set; }
-        // tabla de dispositivos
         public DbSet<Dispositivo> Dispositivos { get; set; }
         public DbSet<DispositivosAsignados> DispositivosAsignados { get; set; }
 
@@ -30,24 +29,34 @@ namespace HalconAlarm0.Contexto
         public DbSet<Contacto> Contactos { get; set; }
         public DbSet<SolicitudesCotizacion> SolicitudesCotizacion { get; set; }
 
+        // ============================
+        // 🔹 NOVEDADES
+        // ============================
+        public DbSet<Novedades> Novedades { get; set; }
+        public DbSet<TiposNovedad> TiposNovedad { get; set; }
+        public DbSet<HistorialNovedades> HistorialNovedades { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Índice único en Correo Electrónico
+            // ============================================================
+            // USUARIOS
+            // ============================================================
             modelBuilder.Entity<Usuarios>()
                 .HasIndex(u => u.CorreoElectronico)
                 .IsUnique();
 
-            // Relación Servicios → ServiciosContratados (1:N)
+            // ============================================================
+            // SERVICIOS CONTRATADOS
+            // ============================================================
             modelBuilder.Entity<ServiciosContratados>()
                 .HasOne(s => s.Servicio)
                 .WithMany(s => s.ServiciosContratados)
                 .HasForeignKey(s => s.ServicioID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Relación Usuarios → ServiciosContratados (1:N)
             modelBuilder.Entity<ServiciosContratados>()
                 .HasOne<Usuarios>()
                 .WithMany()
@@ -55,7 +64,7 @@ namespace HalconAlarm0.Contexto
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Dispositivo>()
-               .HasKey(d => d.DispositivoID);
+                .HasKey(d => d.DispositivoID);
 
             modelBuilder.Entity<Dispositivo>()
                 .HasOne(d => d.Servicio)
@@ -65,6 +74,9 @@ namespace HalconAlarm0.Contexto
             modelBuilder.Entity<ServiciosContratados>()
                 .HasKey(sc => sc.ContratoID);
 
+            // ============================================================
+            // PRODUCTOS
+            // ============================================================
             modelBuilder.Entity<Productos>(entity =>
             {
                 entity.HasKey(e => e.ProductoID);
@@ -79,18 +91,16 @@ namespace HalconAlarm0.Contexto
                 entity.Property(e => e.Marca)
                     .HasMaxLength(100);
 
-                // Modelo es NVARCHAR(100)
                 entity.Property(e => e.Modelo)
                     .HasMaxLength(100);
 
-                // ImagenURL es NVARCHAR(255)
                 entity.Property(e => e.ImagenURL)
                     .HasMaxLength(255);
             });
 
-            // -----------------------------
-            // CONFIGURACIÓN Contactos
-            // -----------------------------
+            // ============================================================
+            // CONTACTOS
+            // ============================================================
             modelBuilder.Entity<Contacto>(entity =>
             {
                 entity.HasKey(e => e.ContactoID);
@@ -118,11 +128,9 @@ namespace HalconAlarm0.Contexto
                 entity.Property(e => e.Telefono)
                       .HasMaxLength(20);
 
-                // Fecha por defecto en SQL Server
                 entity.Property(e => e.FechaContacto)
                       .HasDefaultValueSql("GETDATE()");
 
-                // FKs opcionales a Servicios y Productos
                 entity.HasOne(e => e.Servicio)
                       .WithMany()
                       .HasForeignKey(e => e.ServicioID)
@@ -133,13 +141,13 @@ namespace HalconAlarm0.Contexto
                       .HasForeignKey(e => e.ProductoID)
                       .OnDelete(DeleteBehavior.Restrict);
 
-                // CHECK para que al menos uno (ServicioID o ProductoID) sea no nulo
-                entity.HasCheckConstraint("CHK_Contactos_AlMenosUno", "(ServicioID IS NOT NULL OR ProductoID IS NOT NULL)");
+                entity.HasCheckConstraint("CHK_Contactos_AlMenosUno",
+                    "(ServicioID IS NOT NULL OR ProductoID IS NOT NULL)");
             });
 
-            // -----------------------------
-            // CONFIGURACIÓN SolicitudesCotizacion
-            // -----------------------------
+            // ============================================================
+            // SOLICITUDES DE COTIZACIÓN
+            // ============================================================
             modelBuilder.Entity<SolicitudesCotizacion>(entity =>
             {
                 entity.HasKey(e => e.SolicitudID);
@@ -170,8 +178,6 @@ namespace HalconAlarm0.Contexto
                       .HasForeignKey(e => e.ProductoID)
                       .OnDelete(DeleteBehavior.SetNull);
 
-
-                // CHECK usando ToTable (requerido por EF Core 8+)
                 entity.ToTable(t =>
                 {
                     t.HasCheckConstraint(
@@ -179,11 +185,71 @@ namespace HalconAlarm0.Contexto
                         "Estado IN ('Iniciado', 'En progreso', 'Completado')"
                     );
                 });
-
             });
-            
 
+            // ============================================================
+            // TIPOS DE NOVEDAD
+            // ============================================================
+            modelBuilder.Entity<TiposNovedad>(entity =>
+            {
+                entity.HasKey(e => e.TipoNovedadID);
 
+                entity.Property(e => e.NombreTipo)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.HasIndex(e => e.NombreTipo)
+                      .IsUnique();
+            });
+
+            // ============================================================
+            // NOVEDADES
+            // ============================================================
+            modelBuilder.Entity<Novedades>(entity =>
+            {
+                entity.HasKey(e => e.NovedadID);
+
+                entity.Property(e => e.FechaNovedad)
+                      .HasDefaultValueSql("GETDATE()");
+
+                entity.Property(e => e.Estado)
+                      .HasMaxLength(50)
+                      .HasDefaultValue("Abierto");
+
+                entity.ToTable(t =>
+                {
+                    t.HasCheckConstraint(
+                        "CHK_Novedades_Estado",
+                        "Estado IN ('Abierto','En Progreso','Cerrado')"
+                    );
+                });
+
+                entity.HasOne(e => e.Usuario)
+                      .WithMany()
+                      .HasForeignKey(e => e.UsuarioID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.TipoNovedad)
+                      .WithMany()
+                      .HasForeignKey(e => e.TipoNovedadID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ============================================================
+            // HISTORIAL DE NOVEDADES
+            // ============================================================
+            modelBuilder.Entity<HistorialNovedades>(entity =>
+            {
+                entity.HasKey(e => e.HistorialID);
+
+                entity.Property(e => e.FechaCambio)
+                      .HasDefaultValueSql("GETDATE()");
+
+                entity.HasOne(e => e.Novedad)
+                      .WithMany(n => n.Historial)
+                      .HasForeignKey(e => e.NovedadID)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }
