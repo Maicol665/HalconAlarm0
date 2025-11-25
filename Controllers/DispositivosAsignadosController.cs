@@ -24,6 +24,9 @@ namespace HalconAlarm0.Controllers
         // ============================================================
         [Authorize(Roles = "Admin,Tecnico")]
         [HttpGet("asignados-al-usuario/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerAsignadosPorUsuario(Guid id)
         {
             try
@@ -65,6 +68,9 @@ namespace HalconAlarm0.Controllers
         // ============================================================
         [Authorize(Roles = "Admin,Tecnico")]
         [HttpPost("asignar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AsignarDispositivo([FromBody] AsignarDispositivoDTO dto)
         {
             try

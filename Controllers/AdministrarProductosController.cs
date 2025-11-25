@@ -20,6 +20,9 @@ namespace HalconAlarm0.Controllers
         // ✔ CUALQUIER USUARIO LOGUEADO
         [Authorize]
         [HttpGet("listar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Listar()
         {
             var productos = await _repositorio.ListarProductos();
@@ -37,6 +40,9 @@ namespace HalconAlarm0.Controllers
         // ✔ CUALQUIER USUARIO LOGUEADO
         [Authorize]
         [HttpGet("listarPorId/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerProducto(Guid id)
         {
             var producto = await _repositorio.ObtenerProductoPorId(id);
@@ -55,6 +61,9 @@ namespace HalconAlarm0.Controllers
         // ✔ SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("crear")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Crear([FromBody] CrearProductoDto productoDto)
         {
             if (!ModelState.IsValid)
@@ -79,6 +88,9 @@ namespace HalconAlarm0.Controllers
         // ✔ SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("modificar/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Modificar(Guid id, [FromBody] ActualizarProductoDto productoDto)
         {
             if (!ModelState.IsValid)
@@ -102,6 +114,9 @@ namespace HalconAlarm0.Controllers
         // ✔ SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Eliminar(Guid id)
         {
             var resultado = await _repositorio.EliminarProducto(id);
@@ -113,6 +128,9 @@ namespace HalconAlarm0.Controllers
         // ✔ CUALQUIER USUARIO LOGUEADO
         [Authorize]
         [HttpGet("filtrar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Filtrar(
             [FromQuery] string? nombre,
             [FromQuery] string? marca,

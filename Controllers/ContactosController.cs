@@ -27,6 +27,9 @@ namespace HalconAlarm0.Controllers
         // 📌 Público – cualquier usuario puede registrar una solicitud (RF21)
         [AllowAnonymous]
         [HttpPost("registrar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Registrar([FromBody] RegistrarContactoDTO dto)
         {
             try
@@ -75,6 +78,9 @@ namespace HalconAlarm0.Controllers
         // 🔒 Solo Admin y Asesor pueden ver la lista completa
         [Authorize(Roles = "Admin,Asesor")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Listar([FromQuery] int? take = 50, [FromQuery] int? skip = 0)
         {
             var lista = await _repositorio.ListarContactosAsync(take, skip);
@@ -84,6 +90,9 @@ namespace HalconAlarm0.Controllers
         // 🔒 Solo Admin y Asesor pueden consultar contacto por ID
         [Authorize(Roles = "Admin,Asesor")]
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Obtener(Guid id)
         {
             var contacto = await _repositorio.ObtenerPorIdAsync(id);
@@ -94,6 +103,9 @@ namespace HalconAlarm0.Controllers
         // 🔒 Solo Admin puede eliminar contactos
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Eliminar(Guid id)
         {
             var eliminado = await _repositorio.EliminarContactoAsync(id);
