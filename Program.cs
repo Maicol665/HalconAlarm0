@@ -29,6 +29,7 @@ builder.Services.AddScoped<IDispositivosAsignadosRepositorio, DispositivosAsigna
 builder.Services.AddScoped<IServiciosContratadosRepositorio, ServiciosContratadosRepositorio>();
 builder.Services.AddScoped<IAdministracionProductos, AdministracionProductos>();
 builder.Services.AddScoped<IContactosRepositorio, ContactosRepositorio>();
+builder.Services.AddScoped<ISolicitudesCotizacionRepositorio, SolicitudesCotizacionRepositorio>();
 // Otros servicios
 builder.Services.AddDbContext<ContextoHalconAlarm0>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

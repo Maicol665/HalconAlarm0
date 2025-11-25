@@ -1,4 +1,5 @@
 ﻿using HalconAlarm0.DTOs.Contactos;
+using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,16 @@ namespace HalconAlarm0.Controllers
     public class ContactosController : ControllerBase
     {
         private readonly IContactosRepositorio _repositorio;
+        private readonly ISolicitudesCotizacionRepositorio _soliRepositorio;
         private readonly ILogger<ContactosController> _logger;
 
-        public ContactosController(IContactosRepositorio repositorio, ILogger<ContactosController> logger)
+        public ContactosController(
+            IContactosRepositorio repositorio,
+            ISolicitudesCotizacionRepositorio soliRepositorio,
+            ILogger<ContactosController> logger)
         {
             _repositorio = repositorio;
+            _soliRepositorio = soliRepositorio;
             _logger = logger;
         }
 
@@ -32,9 +38,28 @@ namespace HalconAlarm0.Controllers
                 if (dto.ServicioID == null && dto.ProductoID == null)
                     return BadRequest("Debe seleccionar un Servicio o un Producto de interés.");
 
+                // 1) Registrar el contacto (asumo que tu repositorio acepta el DTO)
                 var contacto = await _repositorio.RegistrarContactoAsync(dto);
+                // contacto.ContactoID debe contener el id generado
 
-                return Ok(new { mensaje = "Contacto registrado", contacto });
+                // 2) Crear la solicitud asociada (RF21: "Registrar y enviar solicitud")
+                var solicitud = new SolicitudesCotizacion
+                {
+                    ContactoID = contacto.ContactoID,
+                    ServicioID = dto.ServicioID,
+                    ProductoID = dto.ProductoID,
+                    Estado = "Iniciado",
+                    FechaSolicitud = DateTime.UtcNow
+                };
+
+                var solicitudCreada = await _soliRepositorio.CrearSolicitudAsync(solicitud);
+
+                return Ok(new
+                {
+                    mensaje = "Contacto registrado y solicitud creada",
+                    contacto,
+                    solicitud = solicitudCreada
+                });
             }
             catch (ArgumentException ex)
             {
@@ -73,6 +98,5 @@ namespace HalconAlarm0.Controllers
 
             return Ok(new { mensaje = "Contacto eliminado" });
         }
-
     }
 }

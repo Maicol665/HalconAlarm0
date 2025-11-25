@@ -28,7 +28,8 @@ namespace HalconAlarm0.Contexto
         public DbSet<Productos> Productos { get; set; } = null!;
 
         public DbSet<Contacto> Contactos { get; set; }
-    
+        public DbSet<SolicitudesCotizacion> SolicitudesCotizacion { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -135,6 +136,52 @@ namespace HalconAlarm0.Contexto
                 // CHECK para que al menos uno (ServicioID o ProductoID) sea no nulo
                 entity.HasCheckConstraint("CHK_Contactos_AlMenosUno", "(ServicioID IS NOT NULL OR ProductoID IS NOT NULL)");
             });
+
+            // -----------------------------
+            // CONFIGURACIÓN SolicitudesCotizacion
+            // -----------------------------
+            modelBuilder.Entity<SolicitudesCotizacion>(entity =>
+            {
+                entity.HasKey(e => e.SolicitudID);
+
+                entity.Property(e => e.SolicitudID)
+                      .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Estado)
+                      .IsRequired()
+                      .HasMaxLength(50)
+                      .HasDefaultValue("Iniciado");
+
+                entity.Property(e => e.FechaSolicitud)
+                      .HasDefaultValueSql("GETDATE()");
+
+                entity.HasOne(e => e.Contacto)
+                      .WithMany()
+                      .HasForeignKey(e => e.ContactoID)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.Servicio)
+                      .WithMany()
+                      .HasForeignKey(e => e.ServicioID)
+                      .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.Producto)
+                      .WithMany()
+                      .HasForeignKey(e => e.ProductoID)
+                      .OnDelete(DeleteBehavior.SetNull);
+
+
+                // CHECK usando ToTable (requerido por EF Core 8+)
+                entity.ToTable(t =>
+                {
+                    t.HasCheckConstraint(
+                        "CHK_SolicitudesCotizacion_Estado",
+                        "Estado IN ('Iniciado', 'En progreso', 'Completado')"
+                    );
+                });
+
+            });
+            
 
 
         }
