@@ -2,6 +2,7 @@
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HalconAlarm0.Controllers
 {
@@ -23,6 +24,8 @@ namespace HalconAlarm0.Controllers
             _logger = logger;
         }
 
+        // 📌 Público – cualquier usuario puede registrar una solicitud (RF21)
+        [AllowAnonymous]
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] RegistrarContactoDTO dto)
         {
@@ -31,18 +34,14 @@ namespace HalconAlarm0.Controllers
                 if (dto == null)
                     return BadRequest("Payload vacío");
 
-                // Validaciones básicas
                 if (string.IsNullOrWhiteSpace(dto.Nombre) || string.IsNullOrWhiteSpace(dto.CorreoElectronico))
                     return BadRequest("Nombre y CorreoElectronico son obligatorios.");
 
                 if (dto.ServicioID == null && dto.ProductoID == null)
                     return BadRequest("Debe seleccionar un Servicio o un Producto de interés.");
 
-                // 1) Registrar el contacto (asumo que tu repositorio acepta el DTO)
                 var contacto = await _repositorio.RegistrarContactoAsync(dto);
-                // contacto.ContactoID debe contener el id generado
 
-                // 2) Crear la solicitud asociada (RF21: "Registrar y enviar solicitud")
                 var solicitud = new SolicitudesCotizacion
                 {
                     ContactoID = contacto.ContactoID,
@@ -73,6 +72,8 @@ namespace HalconAlarm0.Controllers
             }
         }
 
+        // 🔒 Solo Admin y Asesor pueden ver la lista completa
+        [Authorize(Roles = "Admin,Asesor")]
         [HttpGet]
         public async Task<IActionResult> Listar([FromQuery] int? take = 50, [FromQuery] int? skip = 0)
         {
@@ -80,6 +81,8 @@ namespace HalconAlarm0.Controllers
             return Ok(lista);
         }
 
+        // 🔒 Solo Admin y Asesor pueden consultar contacto por ID
+        [Authorize(Roles = "Admin,Asesor")]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> Obtener(Guid id)
         {
@@ -88,6 +91,8 @@ namespace HalconAlarm0.Controllers
             return Ok(contacto);
         }
 
+        // 🔒 Solo Admin puede eliminar contactos
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Eliminar(Guid id)
         {

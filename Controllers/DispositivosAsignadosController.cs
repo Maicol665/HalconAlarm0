@@ -2,6 +2,7 @@
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HalconAlarm0.Controllers
 {
@@ -18,8 +19,10 @@ namespace HalconAlarm0.Controllers
         }
 
         // ============================================================
-        // GET: /api/DispositivosAsignados/usuario/{usuarioId}
+        // GET: /api/DispositivosAsignados/asignados-al-usuario/{id}
+        // Solo Admin y Tecnico
         // ============================================================
+        [Authorize(Roles = "Admin,Tecnico")]
         [HttpGet("asignados-al-usuario/{id}")]
         public async Task<IActionResult> ObtenerAsignadosPorUsuario(Guid id)
         {
@@ -58,7 +61,9 @@ namespace HalconAlarm0.Controllers
 
         // ============================================================
         // POST: /api/DispositivosAsignados/asignar
+        // Solo Admin y Tecnico
         // ============================================================
+        [Authorize(Roles = "Admin,Tecnico")]
         [HttpPost("asignar")]
         public async Task<IActionResult> AsignarDispositivo([FromBody] AsignarDispositivoDTO dto)
         {
