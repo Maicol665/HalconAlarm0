@@ -21,6 +21,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize]
         [HttpPost("registrar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RegistrarNovedad([FromBody] NovedadCrearDTO dto)
         {
             var novedad = new Novedades
@@ -38,6 +41,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("actualizar-estado/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] NovedadEstadoDTO dto)
         {
             bool actualizado = await _repoNovedades.ActualizarEstadoAsync(id, dto.NuevoEstado, dto.Comentario);
@@ -50,6 +56,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("historial/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerHistorial(Guid id)
         {
             var historial = await _repoHistorial.ObtenerPorNovedadAsync(id);
@@ -58,6 +67,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("listar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ListarNovedades()
         {
             var novedades = await _repoNovedades.ObtenerTodasAsync();
@@ -66,6 +78,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerPorId(Guid id)
         {
             var novedad = await _repoNovedades.ObtenerPorIdAsync(id);

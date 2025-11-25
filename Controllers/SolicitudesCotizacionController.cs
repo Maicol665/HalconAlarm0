@@ -19,6 +19,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("listar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Listar()
         {
             var solicitudes = await _repositorio.ObtenerTodasAsync();
@@ -27,6 +30,9 @@ namespace HalconAlarm0.Controllers
 
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerPorId(Guid id)
         {
             var solicitud = await _repositorio.ObtenerPorIdAsync(id);
@@ -40,6 +46,9 @@ namespace HalconAlarm0.Controllers
         
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("actualizar-estado/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] ActualizarEstadoDTO dto)
         {
             if (dto == null || string.IsNullOrWhiteSpace(dto.NuevoEstado))

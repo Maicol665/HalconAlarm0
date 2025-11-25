@@ -31,6 +31,9 @@ namespace HalconAlarm0.Controllers
         
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("registrar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Registrar([FromBody] ContratarServicioDTO dto)
         {
             try
@@ -87,6 +90,9 @@ namespace HalconAlarm0.Controllers
         // solo admin
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("usuario/{usuarioId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerServiciosPorUsuario(Guid usuarioId)
         {
             try
@@ -118,6 +124,9 @@ namespace HalconAlarm0.Controllers
         // ============================================================
         [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{contratoId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> EliminarContrato(Guid contratoId)
         {
             try
@@ -140,6 +149,9 @@ namespace HalconAlarm0.Controllers
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPost] 
         [Route("ObtenerTodosLosContratos")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerTodosLosContratos()
         {
             try

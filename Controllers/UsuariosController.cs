@@ -26,7 +26,10 @@ namespace HalconAlarm0.Controllers
         // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("obtenerUsuarios")]
-        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> ObtenerUsuarios()
         {
             try
@@ -46,7 +49,10 @@ namespace HalconAlarm0.Controllers
         // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpGet("obtenerUsuariosPorID")]
-        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> ObtenerUsuarioPorID(Guid usuarioID)
         {
             try
@@ -67,7 +73,10 @@ namespace HalconAlarm0.Controllers
         // REGISTRO ES PUBLICO
         [AllowAnonymous]
         [HttpPost("RegistrarUsuarios")]
-        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> RegistrarUsuario([FromBody] RegistroUsuarioDTO dto)
         {
             try
@@ -119,7 +128,10 @@ namespace HalconAlarm0.Controllers
         // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("actualizar/{id}")]
-        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> ActualizarUsuario(Guid id, [FromBody] ActualizarUsuarioDTO dto)
         {
             if (dto == null)
@@ -162,7 +174,10 @@ namespace HalconAlarm0.Controllers
         // SOLO ADMIN
         [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("EliminarUsuarios")]
-        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> EliminarUsuario(Guid usuarioID)
         {
             try
