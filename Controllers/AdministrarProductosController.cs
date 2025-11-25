@@ -1,8 +1,8 @@
 ﻿using HalconAlarm0.DTOs;
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace HalconAlarm0.Controllers
 {
@@ -17,47 +17,44 @@ namespace HalconAlarm0.Controllers
             _repositorio = repositorio;
         }
 
-        // GET: api/AdministrarProductos/listar
+        // ✔ CUALQUIER USUARIO LOGUEADO
+        [Authorize]
         [HttpGet("listar")]
         public async Task<IActionResult> Listar()
         {
             var productos = await _repositorio.ListarProductos();
-            var productosDto = productos.Select(p => new ProductoDto
+
+            return Ok(productos.Select(p => new ProductoDto
             {
                 ProductoID = p.ProductoID,
                 NombreProducto = p.NombreProducto,
                 Marca = p.Marca,
                 Modelo = p.Modelo,
                 ImagenURL = p.ImagenURL
-            });
-
-            return Ok(productosDto);
+            }));
         }
 
-        // GET: api/AdministrarProductos/listarPorId/{id}
+        // ✔ CUALQUIER USUARIO LOGUEADO
+        [Authorize]
         [HttpGet("listarPorId/{id}")]
         public async Task<IActionResult> ObtenerProducto(Guid id)
         {
             var producto = await _repositorio.ObtenerProductoPorId(id);
             if (producto == null) return NotFound();
 
-            var productoDto = new ProductoDto
+            return Ok(new ProductoDto
             {
                 ProductoID = producto.ProductoID,
                 NombreProducto = producto.NombreProducto,
                 Marca = producto.Marca,
                 Modelo = producto.Modelo,
                 ImagenURL = producto.ImagenURL
-            };
-
-            return Ok(productoDto);
+            });
         }
 
-        // POST: api/AdministrarProductos/crear
+        // ✔ SOLO ADMIN
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPost("crear")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Crear([FromBody] CrearProductoDto productoDto)
         {
             if (!ModelState.IsValid)
@@ -76,19 +73,11 @@ namespace HalconAlarm0.Controllers
             if (!resultado)
                 return StatusCode(500, "No se pudo crear el producto");
 
-            var productoCreadoDto = new ProductoDto
-            {
-                ProductoID = producto.ProductoID,
-                NombreProducto = producto.NombreProducto,
-                Marca = producto.Marca,
-                Modelo = producto.Modelo,
-                ImagenURL = producto.ImagenURL
-            };
-
-            return CreatedAtAction(nameof(ObtenerProducto), new { id = producto.ProductoID }, productoCreadoDto);
+            return CreatedAtAction(nameof(ObtenerProducto), new { id = producto.ProductoID }, producto);
         }
 
-        // PUT: api/AdministrarProductos/modificar/{id}
+        // ✔ SOLO ADMIN
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpPut("modificar/{id}")]
         public async Task<IActionResult> Modificar(Guid id, [FromBody] ActualizarProductoDto productoDto)
         {
@@ -105,12 +94,13 @@ namespace HalconAlarm0.Controllers
 
             var resultado = await _repositorio.ModificarProducto(id, productoActualizado);
             if (!resultado)
-                return NotFound();
+                return NotFound("Producto no encontrado");
 
             return NoContent();
         }
 
-        // DELETE: api/AdministrarProductos/eliminar/{id}
+        // ✔ SOLO ADMIN
+        [Authorize(Roles = "Usuario Administrador")]
         [HttpDelete("eliminar/{id}")]
         public async Task<IActionResult> Eliminar(Guid id)
         {
@@ -120,9 +110,10 @@ namespace HalconAlarm0.Controllers
             return NoContent();
         }
 
-
-            [HttpGet("filtrar")]
-                public async Task<IActionResult> Filtrar(
+        // ✔ CUALQUIER USUARIO LOGUEADO
+        [Authorize]
+        [HttpGet("filtrar")]
+        public async Task<IActionResult> Filtrar(
             [FromQuery] string? nombre,
             [FromQuery] string? marca,
             [FromQuery] string? modelo)
@@ -138,6 +129,5 @@ namespace HalconAlarm0.Controllers
                 ImagenURL = p.ImagenURL
             }));
         }
-
     }
 }
