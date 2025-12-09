@@ -250,6 +250,28 @@ namespace HalconAlarm0.Contexto
                       .HasForeignKey(e => e.NovedadID)
                       .OnDelete(DeleteBehavior.Cascade);
             });
-        }
-    }
-}
+
+            }
+
+		//-------------------------------------------------------------------------
+		//SETEO CONTRASEÑA//
+		//-------------------------------------------------------------------------
+
+		public class AppDbContext : DbContext
+		{
+			public DbSet<User> Usuarios { get; set; }
+			public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
+			public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+			protected override void OnModelCreating(ModelBuilder mb)
+			{
+				mb.Entity<User>().ToTable("Usuarios").HasKey(u => u.UsuarioId);
+				mb.Entity<User>().Property(u => u.CorreoElectronico).HasMaxLength(320).IsRequired();
+				mb.Entity<PasswordResetToken>().ToTable("PasswordResetTokens").HasKey(t => t.TokenId);
+				mb.Entity<PasswordResetToken>().HasIndex(t => t.Token);
+				base.OnModelCreating(mb);
+			}
+		}
+
+

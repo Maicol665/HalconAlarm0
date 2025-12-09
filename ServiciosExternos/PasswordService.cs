@@ -21,5 +21,12 @@ namespace HalconAlarm0.ServiciosExternos
             var hash = sha256.ComputeHash(combined);
             return Convert.ToBase64String(hash);
         }
-    }
+
+		public static string HashToken(string token, byte[] key)
+		{
+			using var hmac = new HMACSHA256(key);
+			var bytes = Encoding.UTF8.GetBytes(token);
+			return Convert.ToBase64String(hmac.ComputeHash(bytes));
+		}
+	}
 }

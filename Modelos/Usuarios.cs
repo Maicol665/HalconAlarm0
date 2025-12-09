@@ -38,3 +38,13 @@ namespace HalconAlarm0.Modelos
         public Roles? Rol { get; set; }
     }
 }
+
+public class User
+{
+	public Guid UsuarioId { get; set; }
+	public string CorreoElectronico { get; set; } = null!;
+	public byte[] PasswordHash { get; set; } = null!;
+	public byte[]? PasswordSalt { get; set; }
+	public bool Activo { get; set; } = true;
+
+}
