@@ -31,6 +31,9 @@ namespace HalconAlarm0.Modelos
 
         public bool Activo { get; set; } = true;
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
+        public string? TokenRestablecimiento { get; set; }
+        public DateTime? TokenExpiracion { get; set; }
+
 
         public Guid RolID { get; set; }
 

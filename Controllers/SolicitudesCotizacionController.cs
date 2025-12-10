@@ -8,6 +8,7 @@ namespace HalconAlarm0.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "8.0 Solicitudes de cotizacion")]
     public class SolicitudesCotizacionController : ControllerBase
     {
         private readonly ISolicitudesCotizacionRepositorio _repositorio;

@@ -8,6 +8,7 @@ namespace HalconAlarm0.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "7.0 Novedades")]
     public class NovedadesController : ControllerBase
     {
         private readonly INovedadesRepositorio _repoNovedades;

@@ -8,6 +8,7 @@ namespace HalconAlarm0.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "5.0 Administrar Productos")]
     public class AdministrarProductosController : ControllerBase
     {
         private readonly IAdministracionProductos _repositorio;
