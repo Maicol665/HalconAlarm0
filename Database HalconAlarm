@@ -1,0 +1,248 @@
+-- CREATE DATABASE HalconAlarm0;
+-- GO
+-- USE HalconAlarm0;
+-- GO
+
+-------------------------------------------------------
+-- TABLA ROLES
+-------------------------------------------------------
+CREATE TABLE Roles (
+    RolID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    NombreRol NVARCHAR(50) NOT NULL UNIQUE
+);
+GO
+
+-------------------------------------------------------
+-- TABLA USUARIOS
+-------------------------------------------------------
+CREATE TABLE Usuarios (
+    UsuarioID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    Nombres NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(100) NOT NULL,
+    CorreoElectronico NVARCHAR(150) NOT NULL UNIQUE,
+    Telefono NVARCHAR(20),
+    ContrasenaHash NVARCHAR(255) NULL,
+    ContrasenaSalt NVARCHAR(255) NULL,
+    Activo BIT DEFAULT 1,
+    FechaRegistro DATETIME DEFAULT GETDATE(),
+    RolID UNIQUEIDENTIFIER NOT NULL,
+
+    CONSTRAINT FK_Usuarios_Roles 
+        FOREIGN KEY (RolID) REFERENCES Roles(RolID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA SERVICIOS
+-------------------------------------------------------
+CREATE TABLE Servicios (
+    ServicioID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    NombreServicio NVARCHAR(100) NOT NULL,
+    TipoServicio NVARCHAR(100),
+    Descripcion NVARCHAR(MAX),
+    Beneficios NVARCHAR(MAX),
+    Activo BIT DEFAULT 1
+);
+GO
+
+-------------------------------------------------------
+-- TABLA SERVICIOS CONTRATADOS
+-------------------------------------------------------
+CREATE TABLE ServiciosContratados (
+    ContratoID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    UsuarioID UNIQUEIDENTIFIER NOT NULL,
+    ServicioID UNIQUEIDENTIFIER NOT NULL,
+    FechaContratacion DATETIME DEFAULT GETDATE(),
+
+    CONSTRAINT FK_ServiciosContratados_Usuarios 
+        FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID),
+
+    CONSTRAINT FK_ServiciosContratados_Servicios 
+        FOREIGN KEY (ServicioID) REFERENCES Servicios(ServicioID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA DISPOSITIVOS
+-------------------------------------------------------
+CREATE TABLE Dispositivos (
+    DispositivoID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    NombreDispositivo NVARCHAR(100) NOT NULL,
+    Descripcion NVARCHAR(MAX),
+    Marca NVARCHAR(100),
+    Serial NVARCHAR(100),
+    ServicioID UNIQUEIDENTIFIER NOT NULL,
+
+    CONSTRAINT FK_Dispositivos_Servicios 
+        FOREIGN KEY (ServicioID) REFERENCES Servicios(ServicioID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA DISPOSITIVOS ASIGNADOS (NUEVA - RELACIÓN USUARIO DISPOSITIVO)
+-------------------------------------------------------
+CREATE TABLE DispositivosAsignados (
+    AsignacionID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    UsuarioID UNIQUEIDENTIFIER NOT NULL,
+    DispositivoID UNIQUEIDENTIFIER NOT NULL,
+    FechaAsignacion DATETIME DEFAULT GETDATE(),
+
+    CONSTRAINT FK_DispositivosAsignados_Usuarios 
+        FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID),
+
+    CONSTRAINT FK_Dispositivos_Asignados_Dispositivos 
+        FOREIGN KEY (DispositivoID) REFERENCES Dispositivos(DispositivoID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA PRODUCTOS
+-------------------------------------------------------
+CREATE TABLE Productos (
+    ProductoID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    NombreProducto NVARCHAR(100) NOT NULL,
+    Marca NVARCHAR(100),
+    Modelo NVARCHAR(100),
+    ImagenURL NVARCHAR(255),
+
+    CONSTRAINT UQ_Producto UNIQUE (NombreProducto, Marca, Modelo)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA CONTACTOS
+-------------------------------------------------------
+CREATE TABLE Contactos (
+    ContactoID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    Nombre NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(100),
+    CorreoElectronico NVARCHAR(150) NOT NULL,
+    Ciudad NVARCHAR(100),
+    Telefono NVARCHAR(20),
+    ServicioID UNIQUEIDENTIFIER,
+    ProductoID UNIQUEIDENTIFIER,
+    FechaContacto DATETIME DEFAULT GETDATE(),
+
+    CONSTRAINT FK_Contactos_Servicios 
+        FOREIGN KEY (ServicioID) REFERENCES Servicios(ServicioID),
+
+    CONSTRAINT FK_Contactos_Productos 
+        FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID),
+
+    CONSTRAINT CHK_Contactos_AlMenosUno 
+        CHECK (ServicioID IS NOT NULL OR ProductoID IS NOT NULL)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA SOLICITUDES DE COTIZACIÓN
+-------------------------------------------------------
+CREATE TABLE SolicitudesCotizacion (
+    SolicitudID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    ContactoID UNIQUEIDENTIFIER NOT NULL,
+    ServicioID UNIQUEIDENTIFIER,
+    ProductoID UNIQUEIDENTIFIER,
+    Estado NVARCHAR(50) DEFAULT 'Iniciado' 
+        CHECK (Estado IN ('Iniciado', 'En Progreso', 'Completado')),
+    FechaSolicitud DATETIME DEFAULT GETDATE(),
+
+    CONSTRAINT FK_SolicitudesCotizacion_Contactos 
+        FOREIGN KEY (ContactoID) REFERENCES Contactos(ContactoID),
+
+    CONSTRAINT FK_SolicitudesCotizacion_Servicios 
+        FOREIGN KEY (ServicioID) REFERENCES Servicios(ServicioID),
+
+    CONSTRAINT FK_SolicitudesCotizacion_Productos 
+        FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA NOTIFICACIONES
+-------------------------------------------------------
+CREATE TABLE Notificaciones (
+    NotificacionID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    UsuarioID UNIQUEIDENTIFIER NULL,
+    Evento NVARCHAR(255),
+    Contenido NVARCHAR(MAX),
+    FechaEnvio DATETIME DEFAULT GETDATE(),
+    Leida BIT DEFAULT 0,
+
+    CONSTRAINT FK_Notificaciones_Usuarios 
+        FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA TIPOS DE NOVEDAD
+-------------------------------------------------------
+CREATE TABLE TiposNovedad (
+    TipoNovedadID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    NombreTipo NVARCHAR(100) NOT NULL UNIQUE
+);
+GO
+
+-------------------------------------------------------
+-- TABLA NOVEDADES
+-------------------------------------------------------
+CREATE TABLE Novedades (
+    NovedadID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    UsuarioID UNIQUEIDENTIFIER NOT NULL,
+    TipoNovedadID UNIQUEIDENTIFIER NOT NULL,
+    Descripcion NVARCHAR(MAX),
+    FechaNovedad DATETIME DEFAULT GETDATE(),
+    Estado NVARCHAR(50) DEFAULT 'Abierto' 
+        CHECK (Estado IN ('Abierto', 'En Progreso', 'Cerrado')),
+
+    CONSTRAINT FK_Novedades_Usuarios 
+        FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID),
+
+    CONSTRAINT FK_Novedades_TiposNovedad 
+        FOREIGN KEY (TipoNovedadID) REFERENCES TiposNovedad(TipoNovedadID)
+);
+GO
+
+-------------------------------------------------------
+-- TABLA HISTORIAL DE NOVEDADES
+-------------------------------------------------------
+CREATE TABLE HistorialNovedades (
+    HistorialID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    NovedadID UNIQUEIDENTIFIER NOT NULL,
+    FechaCambio DATETIME DEFAULT GETDATE(),
+    EstadoAnterior NVARCHAR(50),
+    EstadoNuevo NVARCHAR(50),
+    Comentarios NVARCHAR(MAX),
+
+    CONSTRAINT FK_HistorialNovedades_Novedades 
+        FOREIGN KEY (NovedadID) REFERENCES Novedades(NovedadID)
+);
+GO
+
+-------------------------------------------------------
+-- ÍNDICES
+-------------------------------------------------------
+CREATE INDEX IX_ServiciosContratados_UsuarioID ON ServiciosContratados(UsuarioID);
+CREATE INDEX IX_ServiciosContratados_ServicioID ON ServiciosContratados(ServicioID);
+CREATE INDEX IX_Dispositivos_ServicioID ON Dispositivos(ServicioID);
+CREATE INDEX IX_DispositivosAsignados_UsuarioID ON DispositivosAsignados(UsuarioID);
+CREATE INDEX IX_DispositivosAsignados_DispositivoID ON DispositivosAsignados(DispositivoID);
+CREATE INDEX IX_Contactos_ServicioID ON Contactos(ServicioID);
+CREATE INDEX IX_Contactos_ProductoID ON Contactos(ProductoID);
+CREATE INDEX IX_SolicitudesCotizacion_ContactoID ON SolicitudesCotizacion(ContactoID);
+CREATE INDEX IX_SolicitudesCotizacion_ServicioID ON SolicitudesCotizacion(ServicioID);
+CREATE INDEX IX_SolicitudesCotizacion_ProductoID ON SolicitudesCotizacion(ProductoID);
+CREATE INDEX IX_Notificaciones_UsuarioID ON Notificaciones(UsuarioID);
+CREATE INDEX IX_Novedades_UsuarioID ON Novedades(UsuarioID);
+CREATE INDEX IX_Novedades_TipoNovedadID ON Novedades(TipoNovedadID);
+CREATE INDEX IX_HistorialNovedades_NovedadID ON HistorialNovedades(NovedadID);
+GO
+
+-------------------------------------------------------
+-- INSERTAR ROLES BASE
+-------------------------------------------------------
+INSERT INTO Roles (RolID, NombreRol) VALUES
+(NEWID(), 'Usuario Administrador'),
+(NEWID(), 'Usuario de conjunto residencial'),
+(NEWID(), 'Usuario de empresa'),
+(NEWID(), 'Usuario persona natural');
+GO
