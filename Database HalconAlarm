@@ -27,6 +27,9 @@ CREATE TABLE Usuarios (
     FechaRegistro DATETIME DEFAULT GETDATE(),
     RolID UNIQUEIDENTIFIER NOT NULL,
 
+    TokenRestablecimiento NVARCHAR(255) NULL,
+    TokenExpiracion DATETIME NULL,
+
     CONSTRAINT FK_Usuarios_Roles 
         FOREIGN KEY (RolID) REFERENCES Roles(RolID)
 );
