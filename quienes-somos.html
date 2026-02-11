@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quiénes Somos? - Halcon Alarm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@700&family=Abhaya+Libre:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Abhaya Libre', serif;
+            background-color: #fff;
+            color: #000;
+            overflow-x: hidden;
+        }
+
+        /* Pantalla principales container */
+        .pantalla-quienes-somos {
+            position: relative;
+            width: 1728px;
+            height: 1117px;
+            background: white;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: absolute;
+            top: 72px;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            padding: 0 140px;
+            gap: 30px;
+        }
+
+        .nav-item {
+            font-family: 'Inria Serif', serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .nav-item a:hover {
+            opacity: 0.7;
+        }
+
+        .nav-divider {
+            width: 0;
+            height: 44px;
+            border-left: 1px solid #000;
+        }
+
+        /* Background image */
+        .hero-background {
+            position: absolute;
+            top: -7px;
+            left: 872px;
+            width: 856px;
+            height: 1131px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Hero content */
+        .hero-content {
+            position: absolute;
+            top: 299px;
+            left: 108px;
+            width: 703px;
+            text-align: left;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-family: 'Abhaya Libre', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #000;
+            margin-bottom: 59px;
+            text-transform: uppercase;
+        }
+
+        .section-description {
+            font-family: 'Abhaya Libre', serif;
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: #000;
+            margin-bottom: 130px;
+            text-align: left;
+        }
+
+        /* Decorative lines and dot */
+        .decoration {
+            position: absolute;
+            top: 729px;
+            left: 143px;
+            width: 268px;
+            height: 0;
+            border-bottom: 1px solid #000;
+        }
+
+        .decoration.right {
+            left: 501px;
+            width: 276px;
+        }
+
+        .dot {
+            position: absolute;
+            top: 721px;
+            left: 449px;
+            width: 15px;
+            height: 15px;
+        }
+
+        .dot img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            position: absolute;
+            top: 827px;
+            left: 293px;
+            width: 312px;
+            height: 43px;
+            background: #000;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Abhaya Libre', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: white;
+            z-index: 3;
+        }
+
+        .cta-button:hover {
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 872px;
+            height: 99px;
+            background: #000;
+            z-index: 1;
+        }
+
+        .footer-text {
+            position: absolute;
+            bottom: 64px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Abhaya Libre', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: white;
+            text-align: center;
+            width: 90%;
+        }
+
+        /* Responsive */
+        @media (max-width: 1728px) {
+            .pantalla-quienes-somos {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1728/1117;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pantalla-quienes-somos">
+        <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html">INICIO</a></li>
+            <li class="nav-divider"></li>
+            <li class="nav-item"><a href="productos.html">PRODUCTOS</a></li>
+            <li class="nav-divider"></li>
+            <li class="nav-item"><a href="servicios.html">SERVICIOS</a></li>
+        </ul>
+    </nav>        <!-- Background image -->
+        <div class="hero-background">
+            <img src="https://www.figma.com/api/mcp/asset/e4dd18f9-b1ff-4388-a63a-5c39c440d440" alt="Edificios modernos">
+        </div>
+
+        <!-- Hero content -->
+        <div class="hero-content">
+            <h2 class="section-title">¿QUIENES SOMOS?</h2>
+            <p class="section-description">
+                Somos una empresa especializada en brindar soluciones integrales de seguridad electrónica, comprometida con la protección de hogares, negocios e industrias. Combinamos tecnología de vanguardia con un equipo altamente capacitado para ofrecer sistemas confiables, eficientes y personalizados. Nuestro objetivo es garantizar tranquilidad a nuestros clientes, protegiendo lo que más valoran a través de vigilancia, monitoreo y control inteligente.
+            </p>
+        </div>
+
+        <!-- Decorative elements -->
+        <div class="decoration"></div>
+        <div class="decoration right"></div>
+        <div class="dot">
+            <img src="https://www.figma.com/api/mcp/asset/a464a288-ef68-47e0-aafd-f3939e6bb69f" alt="Decorative dot">
+        </div>
+
+        <!-- CTA Button -->
+        <button class="cta-button">CONTACTANOS</button>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-text">Protegemos lo que más valoras, las 24 horas, todos los días</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Halcon Alarm - Prototype (HTML)</title>
+  <!-- Solo HTML (puedes conectar globals.css / style.css luego si quieres estilos) -->
+  <link rel="stylesheet" href="globals.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#quienes-somos">¿Quiénes somos?</a></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#iniciar-sesion">Iniciar sesión</a></li>
+        <li><a href="#registro">Registro</a></li>
+        <li><a href="#cotizacion">Cotización</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- FRAME NO. 1 - PANTALLA PRINCIPAL -->
+    <section id="inicio" aria-labelledby="h-inicio">
+      <h1 id="h-inicio">INICIO</h1>
+      <img src="img/52cbdb6441de23a0b5f797894e806fe2-1.png" alt="Banner" />
+      <hr />
+      <nav aria-label="secciones principales">
+        <a href="#servicios">SERVICIOS</a> |
+        <a href="#productos">PRODUCTOS</a> |
+        <a href="#iniciar-sesion">INGRESAR</a>
+      </nav>
+
+      <h2>¿Quienes somos?</h2>
+      <p class="lead">¡SEGURIDAD INTELIGENTE<br>PARA UN MUNDO CONECTADO!</p>
+      <p>Protegemos lo que más valoras, las 24 horas, todos los días.</p>
+
+      <div class="cta">
+        <a href="#productos">PRODUCTOS</a>
+      </div>
+    </section>
+
+    <!-- FRAME NO. 2 - ¿QUIENES SOMOS? -->
+    <section id="quienes-somos" aria-labelledby="h-quienes">
+      <h2 id="h-quienes">¿QUIENES SOMOS?</h2>
+      <p>
+        Somos una empresa especializada en brindar soluciones integrales de seguridad electrónica, comprometida con la
+        protección de hogares, negocios e industrias. Combinamos tecnología de vanguardia con un equipo altamente
+        capacitado para ofrecer sistemas confiables, eficientes y personalizados. Nuestro objetivo es garantizar
+        tranquilidad a nuestros clientes, protegiendo lo que más valoran a través de vigilancia, monitoreo y control
+        inteligente.
+      </p>
+
+      <img src="img/fc6d62f9b832e96f2f9c2ba0cb1b9e3a-1.png" alt="Imagen quienes somos" />
+
+      <aside>
+        <h3>Contáctanos</h3>
+        <p>Protegemos lo que más valoras, las 24 horas, todos los días</p>
+      </aside>
+    </section>
+
+    <!-- FRAME NO. 3 - PRODUCTOS -->
+    <section id="productos" aria-labelledby="h-productos">
+      <h2 id="h-productos">NUESTROS PRODUCTOS</h2>
+
+      <!-- Barra de búsqueda (estructura pura HTML) -->
+      <form class="search-bar" role="search" aria-label="Buscar producto">
+        <label for="q" class="visually-hidden">Buscar producto</label>
+        <input id="q" name="q" type="search" placeholder="Buscar producto" />
+        <button type="submit">Buscar</button>
+      </form>
+
+      <!-- Galería de ejemplos (usé las imágenes que compartiste) -->
+      <div class="galeria">
+        <img src="img/rectangle-9.png" alt="Producto 1" />
+        <img src="img/rectangle-10.png" alt="Producto 2" />
+        <img src="img/rectangle-7.png" alt="Producto 3" />
+        <img src="img/rectangle-8.png" alt="Producto 4" />
+        <img src="img/rectangle-13.png" alt="Producto 5" />
+        <img src="img/rectangle-14.png" alt="Producto 6" />
+      </div>
+
+      <h3>¡MAS QUE UNA CAMARA ES UNA VISION INTELIGENTE!</h3>
+      <p>EXPLORA NUESTRA TECNOLOGIA EN CAMARAS DE VIDEOVIGILANCIA</p>
+
+      <article class="producto-destacado">
+        <h4>CAMARA 4 EN 1 - TORRETA 5MP</h4>
+        <p>Dentsu Inc.</p>
+      </article>
+    </section>
+
+    <!-- FRAME NO. 4/5 - INICIO DE SESION (dos variantes comparten estructura) -->
+    <section id="iniciar-sesion" aria-labelledby="h-login">
+      <h2 id="h-login">INICIAR SESION</h2>
+
+      <form class="login-form" method="post" action="#">
+        <label for="email">Correo electrónico</label>
+        <input id="email" name="email" type="email" placeholder="Ejemplo@gmail.com" required />
+
+        <label for="password">Tu contraseña</label>
+        <input id="password" name="password" type="password" placeholder="Tu contraseña" required />
+
+        <label><input type="checkbox" name="remember" /> Recuerdame</label>
+
+        <button type="submit">Iniciar sesión</button>
+      </form>
+
+      <p>O CONTINUA CON</p>
+      <div class="social">
+        <button type="button">Google</button>
+        <button type="button">GitHub</button>
+      </div>
+
+      <p>¿No tienes una cuenta? <a href="#registro">Regístrate aquí</a></p>
+    </section>
+
+    <!-- FRAME NO. 6 - REGISTRO -->
+    <section id="registro" aria-labelledby="h-registro">
+      <h2 id="h-registro">BIENVENIDO A HALCON ALARM</h2>
+
+      <form class="registro-form" method="post" action="#">
+        <fieldset>
+          <legend>Datos personales</legend>
+          <label for="nombre">Nombre *</label>
+          <input id="nombre" name="nombre" type="text" required />
+
+          <label for="apellido">Apellido *</label>
+          <input id="apellido" name="apellido" type="text" required />
+
+          <label for="identificacion">Identificación *</label>
+          <input id="identificacion" name="identificacion" type="text" required />
+
+          <label for="tipo-id">Tipo de Identificación *</label>
+          <select id="tipo-id" name="tipo-id">
+            <option value="cc">C.C.</option>
+            <option value="nit">NIT</option>
+            <option value="ti">T.I.</option>
+            <option value="ce">C.E.</option>
+          </select>
+
+          <label for="telefono">Teléfono *</label>
+          <input id="telefono" name="telefono" type="tel" required />
+        </fieldset>
+
+        <fieldset>
+          <legend>Contacto</legend>
+          <label for="correo">Correo electrónico *</label>
+          <input id="correo" name="correo" type="email" required />
+
+          <label for="direccion">Dirección</label>
+          <input id="direccion" name="direccion" type="text" />
+
+          <label for="ciudad">Ciudad *</label>
+          <input id="ciudad" name="ciudad" type="text" required />
+        </fieldset>
+
+        <fieldset>
+          <legend>Tipo de usuario</legend>
+          <label><input type="radio" name="tipo-usuario" value="hogar" checked /> Hogar</label>
+          <label><input type="radio" name="tipo-usuario" value="conjunto" /> Conjunto residencial</label>
+          <label><input type="radio" name="tipo-usuario" value="empresa" /> Empresa</label>
+        </fieldset>
+
+        <label>
+          <input type="checkbox" name="privacidad" required />
+          Autorizo el tratamiento de mis datos personales de acuerdo con los terminos establecidos en la politica de
+          privacidad.
+        </label>
+
+        <button type="submit">REGISTRARME</button>
+      </form>
+    </section>
+
+    <!-- FRAME NO. 7 - REGISTRO EXITOSO (puede mostrarse después del registro) -->
+    <section id="registro-exitoso" aria-labelledby="h-registro-exitoso">
+      <h2 id="h-registro-exitoso">Registro exitoso</h2>
+      <p>¡Gracias por registrarte! Revisa tu correo para completar la verificación y comenzar a usar Halcon Alarm.</p>
+      <a href="#iniciar-sesion">Iniciar sesión</a>
+    </section>
+
+    <!-- FRAME NO. 8 - SERVICIOS -->
+    <section id="servicios" aria-labelledby="h-servicios">
+      <h2 id="h-servicios">SERVICIOS</h2>
+      <p>Ofrecemos instalación, monitoreo 24/7, mantenimiento y soluciones de control inteligente para tu propiedad.</p>
+    </section>
+
+    <!-- FRAME NO. 9 - COTIZACIÓN -->
+    <section id="cotizacion" aria-labelledby="h-cotizacion">
+      <h2 id="h-cotizacion">SOLICITAR COTIZACIÓN</h2>
+
+      <form class="cotizacion-form" method="post" action="#">
+        <label for="cot-nombre">Nombre</label>
+        <input id="cot-nombre" name="cot-nombre" type="text" />
+
+        <label for="cot-email">Correo</label>
+        <input id="cot-email" name="cot-email" type="email" />
+
+        <label for="cot-telefono">Teléfono</label>
+        <input id="cot-telefono" name="cot-telefono" type="tel" />
+
+        <label for="cot-mensaje">Mensaje</label>
+        <textarea id="cot-mensaje" name="cot-mensaje" rows="4"></textarea>
+
+        <button type="submit">Enviar solicitud</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; Halcon Alarm</p>
+  </footer>
+</body>
+</html>
