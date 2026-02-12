@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión - Halcon Alarm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400&family=Sree+Krushnadevaraya:wght@400&family=Inria+Serif:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Newsreader', serif;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        .login-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            max-width: 1841px;
+            max-height: 1132px;
+            background-color: #ffffff;
+        }
+
+        /* Left side - Background image */
+        .login-background {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 838px;
+            height: 1117px;
+            overflow: hidden;
+        }
+
+        .login-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        /* Right side overlay background */
+        .right-overlay {
+            position: absolute;
+            left: 640px;
+            top: -15px;
+            width: 1201px;
+            height: 1132px;
+            background-color: rgba(217, 217, 217, 0.48);
+        }
+
+        /* Top navigation - Inicio link */
+        .top-nav {
+            position: absolute;
+            top: 14px;
+            right: 175px;
+            font-family: 'Inria Serif', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .top-nav:hover {
+            opacity: 0.7;
+        }
+
+        /* Title - INICIAR SESION */
+        .login-title {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Newsreader', serif;
+            font-size: 40px;
+            font-weight: 400;
+            color: #000000;
+            text-align: center;
+            letter-spacing: 0;
+            width: 100%;
+        }
+        /* Form container */
+        .login-form {
+            position: absolute;
+            right: 120px;
+            top: 280px;
+            width: 595px;
+        }   width: 595px;
+        }
+
+        /* Email label */
+        .form-label-email {
+            position: absolute;
+            left: 0;
+            top: -40px;
+            font-family: 'Newsreader', serif;
+            font-size: 20px;
+            color: #000000;
+            height: 20px;
+        }
+
+        /* Email input */
+        .form-input {
+            position: absolute;
+            left: 0;
+            width: 595px;
+            height: 36px;
+            background-color: rgba(169, 172, 184, 0.27);
+            border: none;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-family: 'Sree Krushnadevaraya', serif;
+            font-size: 16px;
+            color: #9a9191;
+            opacity: 0.9;
+        }
+
+        .form-input::placeholder {
+            color: #9a9191;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background-color: rgba(169, 172, 184, 0.35);
+        }
+
+        /* Email correction image label */
+        .email-label-image {
+            position: absolute;
+            left: 0;
+            top: -70px;
+            width: 190px;
+            height: 16px;
+        }
+
+        .email-label-image img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Password section */
+        .password-section {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 595px;
+        }
+
+        .form-label-password {
+            position: absolute;
+            left: 0;
+            top: -40px;
+            font-family: 'Newsreader', serif;
+            font-size: 20px;
+            color: #000000;
+            height: 20px;
+        }
+
+        .password-label-image {
+            position: absolute;
+            left: 0;
+            top: -65px;
+            width: 117px;
+            height: 16px;
+        }
+
+        .password-label-image img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .form-input-password {
+            width: 100%;
+            height: 36px;
+            background-color: rgba(169, 172, 184, 0.27);
+            border: none;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-family: 'Sree Krushnadevaraya', serif;
+            font-size: 16px;
+            color: #9a9191;
+            opacity: 0.9;
+        }
+
+        .form-input-password::placeholder {
+            color: #9a9191;
+        }
+
+        .form-input-password:focus {
+            outline: none;
+            background-color: rgba(169, 172, 184, 0.35);
+        }
+
+        /* Remember me section */
+        .remember-section {
+            position: absolute;
+            left: 0;
+            top: 210px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-wrapper {
+            position: relative;
+            width: 35px;
+            height: 30px;
+            background-color: rgba(169, 172, 184, 0.27);
+            border-radius: 10px;
+            opacity: 0.9;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .remember-text {
+            font-family: 'Newsreader', serif;
+            font-size: 25px;
+            color: #000000;
+            cursor: pointer;
+        }
+
+        /* Forgot password link */
+        .forgot-password {
+            position: absolute;
+            left: 327px;
+            top: 210px;
+            font-family: 'Newsreader', serif;
+            font-size: 20px;
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            opacity: 0.7;
+        }
+
+        .forgot-password-image {
+            position: absolute;
+            right: 0;
+            top: 210px;
+            width: 270px;
+            height: 20px;
+        }
+
+        .forgot-password-image img {
+            width: 100%;
+        /* Login button */
+        .login-button {
+            position: absolute;
+            left: 0;
+            top: 310px;
+            width: 595px;
+            height: 50px;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Newsreader', serif;
+            font-size: 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }   border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #333333;
+        }
+
+        .login-button:active {
+            background-color: #000000;
+        }
+
+        /* Register link under button */
+        .register-link {
+            display: block;
+            margin-top: 12px;
+            width: 595px;
+            text-align: center;
+            text-decoration: none;
+            color: #000000;
+            font-family: 'Newsreader', serif;
+            font-size: 18px;
+        }
+
+        .register-link:hover {
+            opacity: 0.85;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1841px) {
+            .login-container {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1841 / 1132;
+            }
+
+            .login-background {
+                width: 45%;
+                height: 100%;
+            }
+
+            .right-overlay {
+                left: 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Left background image -->
+        <div class="login-background">
+            <img src="https://www.figma.com/api/mcp/asset/38c43058-2a16-4f72-91ce-1e738e9b0ae8" alt="Oficina moderna con escritorio">
+        </div>
+
+        <!-- Right overlay -->
+        <div class="right-overlay"></div>
+
+        <!-- Top navigation -->
+        <a href="index.html" class="top-nav">INICIO</a>
+
+        <!-- Login title -->
+        <h1 class="login-title">INICIAR SESION</h1>
+
+        <!-- Login form -->
+        <div class="login-form">
+            <!-- Email section -->
+            <div style="position: relative; height: 100px; margin-bottom: 40px;">
+                <div class="email-label-image">
+                    <img src="https://www.figma.com/api/mcp/asset/cac4f0a7-e28d-4d78-82a0-6a013708f011" alt="Correo electrónico">
+                </div>
+                <input type="email" class="form-input" placeholder="Ejemplo@gmail.com">
+            </div>
+
+            <!-- Password section -->
+            <div style="position: relative; height: 120px; margin-bottom: 20px;">
+                <div class="password-label-image">
+                    <img src="https://www.figma.com/api/mcp/asset/dad89eb2-327c-4a6a-b6e7-ece09c704946" alt="Contraseña">
+                </div>
+                <input type="password" class="form-input-password" placeholder="Tu contraseña">
+            </div>
+
+            <!-- Remember me checkbox -->
+            <div class="remember-section">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="remember-me">
+                </div>
+                <label for="remember-me" class="remember-text">Recuerdame</label>
+            </div>
+
+            <!-- Forgot password link -->
+            <div class="forgot-password-image">
+                <img src="https://www.figma.com/api/mcp/asset/28c9cb32-5a21-493e-8cd5-99994e3a1de6" alt="¿Olvistaste tu contraseña?">
+            </div>
+
+            <!-- Login button -->
+            <button class="login-button">Iniciar sesion</button>
+            <a href="registro.html" class="register-link">Registrarme</a>
+        </div>
+    </div>
+</body>
+</html>

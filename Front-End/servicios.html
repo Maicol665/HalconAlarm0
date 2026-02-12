@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios - Halcon Alarm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&family=Kameron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inria Serif', serif;
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .servicios-container {
+            position: relative;
+            width: 100%;
+            max-width: 1728px;
+            min-height: 100vh;
+            background-color: #ffffff;
+            padding: 0;
+        }
+
+        /* Top navigation */
+        .top-nav {
+            position: absolute;
+            top: 104px;
+            left: 110px;
+            font-family: 'Inria Serif', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+            transform: translateX(-50%);
+        }
+
+        .top-nav:hover {
+            opacity: 0.7;
+        }
+
+        /* Main title */
+        .main-title {
+            position: absolute;
+            top: 103px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Kameron', serif;
+            font-size: 34px;
+            font-weight: 700;
+            color: #000000;
+            text-align: center;
+            letter-spacing: 0;
+        }
+
+        /* Services grid container */
+        .services-grid {
+            position: absolute;
+            top: 216px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1500px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px 100px;
+            padding: 0 40px;
+        }
+
+        /* Service card */
+        .service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Service image - top section */
+        .service-image-top {
+            width: 591px;
+            height: 383px;
+            border-radius: 108px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            opacity: 0.85;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-image-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Alternative rounded image styles for other cards */
+        .service-image-right {
+            width: 639px;
+            height: 403px;
+            border-radius: 103px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .service-image-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-image-bottom {
+            width: 616px;
+            height: 502px;
+            border-radius: 150px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .service-image-bottom img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Service title */
+        .service-title {
+            font-family: 'Inria Serif', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            text-align: center;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Separator line */
+        .separator-line {
+            width: 479px;
+            height: 1px;
+            background-color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .separator-line-bottom {
+            width: 296px;
+            height: 1px;
+            background-color: #000000;
+            margin-bottom: 20px;
+        }
+
+        /* Service description */
+        .service-description {
+            font-family: 'Inria Serif', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            text-align: center;
+            line-height: 1.5;
+            max-width: 616px;
+            min-height: 87px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Grid positioning adjustments */
+        .service-card:nth-child(1) .service-image-top {
+            width: 591px;
+            height: 383px;
+            border-radius: 108px;
+        }
+
+        .service-card:nth-child(2) .service-image-right {
+            width: 639px;
+            height: 403px;
+            border-radius: 103px;
+        }
+
+        .service-card:nth-child(3) .service-image-bottom {
+            width: 616px;
+            height: 502px;
+            border-radius: 150px;
+        }
+
+        .service-card:nth-child(4) .service-image-bottom {
+            width: 616px;
+            height: 502px;
+            border-radius: 118px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1728px) {
+            .servicios-container {
+                width: 100%;
+                aspect-ratio: 1728 / 1620;
+            }
+
+            .services-grid {
+                width: 95%;
+                gap: 60px 80px;
+            }
+
+            .service-image-top,
+            .service-image-right,
+            .service-image-bottom {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="servicios-container">
+        <!-- Top navigation -->
+        <a href="index.html" class="top-nav">Inicio</a>
+
+        <!-- Main title -->
+        <h1 class="main-title">EXPLORA NUESTRA TECNOLOGIA</h1>
+
+        <!-- Services grid -->
+        <div class="services-grid">
+            <!-- Service 1: CCTV -->
+            <div class="service-card">
+                <div class="service-image-top">
+                    <img src="https://www.figma.com/api/mcp/asset/6afd4634-699f-4935-a3a0-669e128754b7" alt="Circuito cerrado de televisión (CCTV)">
+                </div>
+                <h2 class="service-title">Circuito cerrado de televisión (CCTV)</h2>
+                <div class="separator-line"></div>
+                <p class="service-description">Instalamos sistemas de CCTV modernos para hogares y negocios, con monitoreo en tiempo real y acceso remoto. Seguridad, confianza y soporte profesional.</p>
+            </div>
+
+            <!-- Service 2: Sistemas de Intrusión -->
+            <div class="service-card">
+                <div class="service-image-right">
+                    <img src="https://www.figma.com/api/mcp/asset/fb5463a1-b356-4bef-8325-f4eed2d44899" alt="Sistemas de Intrusión">
+                </div>
+                <h2 class="service-title">SISTEMAS DE INTRUSION</h2>
+                <div class="separator-line"></div>
+                <p class="service-description">Mantén tu hogar o negocio siempre seguro con nuestros sistemas de intrusión inteligentes. Detectan y alertan cualquier intento de acceso no autorizado, enviando notificaciones inmediatas a tu celular. Tecnología avanzada y soporte profesional que te dan tranquilidad y protección 24/7.</p>
+            </div>
+
+            <!-- Service 3: Sistemas de Alarmas -->
+            <div class="service-card">
+                <div class="service-image-bottom">
+                    <img src="https://www.figma.com/api/mcp/asset/cdb9663e-7afb-4d39-a982-12a76eb22936" alt="Sistemas de Alarmas">
+                </div>
+                <h2 class="service-title">SISTEMAS DE ALARMAS</h2>
+                <div class="separator-line-bottom"></div>
+                <p class="service-description">Nuestras alarmas inteligentes protegen tu hogar o negocio las 24 horas. Con sensores de última generación y notificaciones en tiempo real, te alertan de cualquier intento de intrusión, brindándote seguridad y tranquilidad siempre.</p>
+            </div>
+
+            <!-- Service 4: Controles de Acceso -->
+            <div class="service-card">
+                <div class="service-image-bottom">
+                    <img src="https://www.figma.com/api/mcp/asset/4955459a-e29e-412e-b2d3-034d093a8d79" alt="Controles de Acceso">
+                </div>
+                <h2 class="service-title">CONTROLES DE ACCESO</h2>
+                <div class="separator-line-bottom"></div>
+                <p class="service-description">Optimiza la seguridad y el control en tu hogar, oficina o empresa con sistemas de control de acceso inteligentes. Con tarjetas, huellas digitales, claves o reconocimiento facial, podrás gestionar quién entra y a qué áreas, garantizando protección, organización y comodidad en todo momento.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
