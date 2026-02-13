@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+ using System.Security.Cryptography;
 
 namespace HalconAlarm0.Repositorios
 {
@@ -76,10 +77,13 @@ namespace HalconAlarm0.Repositorios
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.CorreoElectronico == correo && u.Activo);
             if (usuario == null)
                 return false;
+            
+             
 
-            // Generar OTP de 6 dígitos
-            var random = new Random();
-            var codigoOtp = random.Next(100000, 999999).ToString();
+            // Generar OTP seguro (6 dígitos)
+            var rng = RandomNumberGenerator.GetBytes(4);
+            var codigoOtp = (BitConverter.ToUInt32(rng, 0) % 900000 + 100000).ToString();
+            
 
             usuario.TokenRestablecimiento = codigoOtp;
             usuario.TokenExpiracion = DateTime.UtcNow.AddMinutes(10); // expira en 10 minutos
