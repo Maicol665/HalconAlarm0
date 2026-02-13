@@ -249,3 +249,77 @@ INSERT INTO Roles (RolID, NombreRol) VALUES
 (NEWID(), 'Usuario de empresa'),
 (NEWID(), 'Usuario persona natural');
 GO
+
+-------------------------------------------------------
+-- INSERTAR SERVICIOS BASE
+-------------------------------------------------------
+
+INSERT INTO Servicios (ServicioID, NombreServicio, TipoServicio, Descripcion, Beneficios, Activo)
+VALUES
+(NEWID(), 'Monitoreo de Alarmas', 'Seguridad Electrónica',
+ 'Supervisión 24/7 de sistemas de alarma conectados a central.',
+ 'Respuesta inmediata ante intrusión y soporte permanente.', 1),
+
+(NEWID(), 'Videovigilancia', 'Seguridad Electrónica',
+ 'Instalación y monitoreo de cámaras de seguridad.',
+ 'Grabación continua y acceso remoto.', 1),
+
+(NEWID(), 'Control de Accesos', 'Seguridad Electrónica',
+ 'Gestión de entradas y salidas mediante dispositivos electrónicos.',
+ 'Mayor control y registro de accesos.', 1),
+
+(NEWID(), 'Detección de Incendios', 'Seguridad Electrónica',
+ 'Sistemas de detección temprana de humo y calor.',
+ 'Prevención y alerta inmediata ante incendios.', 1);
+GO
+
+-------------------------------------------------------
+-- INSERTAR DISPOSITIVOS BASE MONIROREO DE ALARMAS
+-------------------------------------------------------
+DECLARE @ServicioAlarmas UNIQUEIDENTIFIER =
+(SELECT ServicioID FROM Servicios WHERE NombreServicio = 'Monitoreo de Alarmas');
+
+INSERT INTO Dispositivos (NombreDispositivo, Descripcion, Marca, Serial, ServicioID)
+VALUES
+('Panel de Alarma', 'Panel central de control del sistema', 'DSC', 'ALM-001', @ServicioAlarmas),
+('Sensor de Movimiento', 'Sensor infrarrojo de detección', 'Bosch', 'ALM-002', @ServicioAlarmas),
+('Sirena Exterior', 'Sirena de alta potencia', 'Honeywell', 'ALM-003', @ServicioAlarmas);
+GO
+-------------------------------------------------------
+-- INSERTAR DISPOSITIVOS VIDEOVIGILANCIA
+-------------------------------------------------------
+
+DECLARE @ServicioVideo UNIQUEIDENTIFIER =
+(SELECT ServicioID FROM Servicios WHERE NombreServicio = 'Videovigilancia');
+
+INSERT INTO Dispositivos (NombreDispositivo, Descripcion, Marca, Serial, ServicioID)
+VALUES
+('Camara IP', 'Camara de alta resolucion', 'Hikvision', 'VID-001', @ServicioVideo),
+('DVR', 'Grabador digital de video', 'Dahua', 'VID-002', @ServicioVideo),
+('Disco Duro 2TB', 'Almacenamiento para grabaciones', 'Seagate', 'VID-003', @ServicioVideo);
+GO
+
+-------------------------------------------------------
+-- INSERTAR DISPOSITIVOS CONTROL DE ACCESOS
+-------------------------------------------------------
+DECLARE @ServicioAcceso UNIQUEIDENTIFIER =
+(SELECT ServicioID FROM Servicios WHERE NombreServicio = 'Control de Accesos');
+
+INSERT INTO Dispositivos (NombreDispositivo, Descripcion, Marca, Serial, ServicioID)
+VALUES
+('Lector Biometrico', 'Control por huella digital', 'ZKTeco', 'ACC-001', @ServicioAcceso),
+('Tarjeta RFID', 'Tarjeta de proximidad', 'Generic', 'ACC-002', @ServicioAcceso),
+('Controlador de Puerta', 'Modulo de control electrico', 'Hikvision', 'ACC-003', @ServicioAcceso);
+GO
+-------------------------------------------------------
+-- INSERTAR DISPOSITIVOS DETECCIÓN DE INCENDIOS
+-------------------------------------------------------
+DECLARE @ServicioIncendio UNIQUEIDENTIFIER =
+(SELECT ServicioID FROM Servicios WHERE NombreServicio = 'Detección de Incendios');
+
+INSERT INTO Dispositivos (NombreDispositivo, Descripcion, Marca, Serial, ServicioID)
+VALUES
+('Detector de Humo', 'Sensor de deteccion de humo', 'Siemens', 'FIR-001', @ServicioIncendio),
+('Central Contra Incendio', 'Panel central de incendio', 'Notifier', 'FIR-002', @ServicioIncendio),
+('Alarma Visual y Sonora', 'Dispositivo de alerta', 'Honeywell', 'FIR-003', @ServicioIncendio);
+GO
