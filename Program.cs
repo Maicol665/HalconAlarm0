@@ -84,15 +84,33 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // =====================================
-// 🔹 CORS
+// 🔹 CORS - Restringido por ambiente
 // =====================================
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder
-            .AllowAnyOrigin()
+    if (builder.Environment.IsDevelopment())
+    {
+        // En DESARROLLO: Permite múltiples puertos locales
+        options.AddPolicy("AllowSpecificOrigin",
+            b => b.WithOrigins(
+                "http://localhost:3000",    // React
+                "http://localhost:5173",    // Vite
+                "http://localhost:4200",    // Angular
+                "http://localhost:8080"     // Otros
+            )
             .AllowAnyMethod()
+            .AllowCredentials()             // Importante para JWT
             .AllowAnyHeader());
+    }
+    else
+    {
+        // En PRODUCCIÓN: Solo dominio específico
+        options.AddPolicy("AllowSpecificOrigin",
+            b => b.WithOrigins("https://tudominio.com")
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .AllowAnyHeader());
+    }
 });
 
 // =====================================
