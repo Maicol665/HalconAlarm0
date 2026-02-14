@@ -1,4 +1,5 @@
 ﻿using HalconAlarm0.Contexto;
+using HalconAlarm0.Middlewares;
 using HalconAlarm0.Repositorios;
 using HalconAlarm0.Repositorios.Interfaces;
 using HalconAlarm0.ServiciosExternos;
@@ -116,7 +117,8 @@ builder.Services.AddCors(options =>
 // =====================================
 // 🔹 Configuración JWT
 // =====================================
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key no configurada");
+var key = Encoding.ASCII.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(x =>
 {
@@ -140,6 +142,11 @@ builder.Services.AddAuthentication(x =>
 });
 
 var app = builder.Build();
+
+// =====================================
+// 🔹 MIDDLEWARE - Manejo Global de Errores
+// =====================================
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // =====================================
 // 🔹 PIPELINE
