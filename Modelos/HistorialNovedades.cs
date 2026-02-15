@@ -2,49 +2,13 @@
 {
     public class HistorialNovedades
     {
-        private Guid _historialID;
-        private Guid _novedadID;
-        private DateTime _fechaCambio;
-        private string _estadoAnterior;
-        private string _estadoNuevo;
-        private string _comentarios;
+        public Guid HistorialID { get; set; }
+        public Guid NovedadID { get; set; }
+        public DateTime FechaCambio { get; set; }
+        public string EstadoAnterior { get; set; } = string.Empty;
+        public string EstadoNuevo { get; set; } = string.Empty;
+        public string Comentarios { get; set; } = string.Empty;
 
-        public Guid HistorialID
-        {
-            get => _historialID;
-            set => _historialID = value;
-        }
-
-        public Guid NovedadID
-        {
-            get => _novedadID;
-            set => _novedadID = value;
-        }
-
-        public DateTime FechaCambio
-        {
-            get => _fechaCambio;
-            set => _fechaCambio = value;
-        }
-
-        public string EstadoAnterior
-        {
-            get => _estadoAnterior;
-            set => _estadoAnterior = value;
-        }
-
-        public string EstadoNuevo
-        {
-            get => _estadoNuevo;
-            set => _estadoNuevo = value;
-        }
-
-        public string Comentarios
-        {
-            get => _comentarios;
-            set => _comentarios = value;
-        }
-
-        public Novedades Novedad { get; set; }
+        public Novedades? Novedad { get; set; }
     }
 }
