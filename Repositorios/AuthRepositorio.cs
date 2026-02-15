@@ -1,6 +1,7 @@
 ﻿using HalconAlarm0.Contexto;
 using HalconAlarm0.Modelos;
 using HalconAlarm0.Repositorios.Interfaces;
+using HalconAlarm0.ServiciosExternos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -16,11 +17,13 @@ namespace HalconAlarm0.Repositorios
     {
         private readonly ContextoHalconAlarm0 _context;
         private readonly IConfiguration _configuration;
+        private readonly PasswordService _passwordService;
 
-        public AuthRepositorio(ContextoHalconAlarm0 context, IConfiguration configuration)
+        public AuthRepositorio(ContextoHalconAlarm0 context, IConfiguration configuration, PasswordService passwordService)
         {
             _context = context;
             _configuration = configuration;
+            _passwordService = passwordService;
         }
 
         // Login normal
@@ -33,8 +36,7 @@ namespace HalconAlarm0.Repositorios
             if (usuario == null)
                 return null;
 
-            var passwordService = new ServiciosExternos.PasswordService();
-            var hashIngresado = passwordService.GenerarHash(request.Contrasena, usuario.ContrasenaSalt);
+            var hashIngresado = _passwordService.GenerarHash(request.Contrasena, usuario.ContrasenaSalt);
 
             if (hashIngresado != usuario.ContrasenaHash)
                 return null;
@@ -102,9 +104,8 @@ namespace HalconAlarm0.Repositorios
             if (usuario == null || usuario.TokenExpiracion < DateTime.UtcNow)
                 return false;
 
-            var passwordService = new ServiciosExternos.PasswordService();
-            var nuevoSalt = passwordService.GenerarSalt();
-            var nuevoHash = passwordService.GenerarHash(nuevaContrasena, nuevoSalt);
+            var nuevoSalt = _passwordService.GenerarSalt();
+            var nuevoHash = _passwordService.GenerarHash(nuevaContrasena, nuevoSalt);
 
             usuario.ContrasenaSalt = nuevoSalt;
             usuario.ContrasenaHash = nuevoHash;
