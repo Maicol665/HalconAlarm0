@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos — Halcon Alarm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,400&family=Abhaya+Libre:wght@400;600;700;800&family=Advent+Pro:wght@300;400;500&family=Kameron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page-productos">
+
+    <!-- Header negro -->
+    <header class="productos-header">
+      <nav class="nav-list">
+        <li class="nav-item"><a href="index.html">INICIO</a></li>
+        <li class="nav-divider" style="background:#fff;"></li>
+        <li class="nav-item"><a href="servicios.html" style="color:#fff;">SERVICIOS</a></li>
+        <li class="nav-spacer"></li>
+        <li class="nav-item" style="color:#fff; font-size:17px; padding:0 20px; font-family:'Abhaya Libre',serif; font-weight:600; letter-spacing:0.04em;">NUESTROS PRODUCTOS</li>
+        <div class="productos-search">
+          <input type="search" placeholder="Buscar producto" aria-label="Buscar producto">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Cuerpo: texto izq + imagen der -->
+    <div class="productos-body">
+      <div class="productos-left">
+        <span class="productos-eyebrow">Catálogo de seguridad</span>
+        <h1 class="productos-main-title">
+          EXPLORA NUESTRA TECNOLOGÍA EN CÁMARAS DE VIDEOVIGILANCIA
+        </h1>
+        <p class="productos-sub">¡Más que una cámara, es una visión inteligente!</p>
+        <div class="productos-featured-img">
+          <img
+            src="img/producto-destacado.jpg"
+            alt="Cámara destacada"
+            onerror="this.src='https://images.unsplash.com/photo-1603201667141-5a2d4c673b05?w=600&q=80'"
+          >
+        </div>
+      </div>
+
+      <div class="productos-right">
+        <img
+          src="img/productos-hero.jpg"
+          alt="Galería de cámaras"
+          onerror="this.src='https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=900&q=80'"
+        >
+      </div>
+    </div>
+
+    <!-- Galería thumbnails -->
+    <div class="productos-gallery">
+      <div class="product-thumb">
+        <img src="img/rect-9.jpg" alt="Producto 1" onerror="this.src='https://images.unsplash.com/photo-1548324215-9133768ebb25?w=200&q=70'">
+      </div>
+      <div class="product-thumb">
+        <img src="img/rect-10.jpg" alt="Producto 2" onerror="this.src='https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=200&q=70'">
+      </div>
+      <div class="product-thumb">
+        <img src="img/rect-7.jpg" alt="Producto 3" onerror="this.src='https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=200&q=70'">
+      </div>
+      <div class="product-thumb">
+        <img src="img/rect-8.jpg" alt="Producto 4" onerror="this.src='https://images.unsplash.com/photo-1603201667141-5a2d4c673b05?w=200&q=70'">
+      </div>
+      <div class="product-thumb">
+        <img src="img/rect-13.jpg" alt="Producto 5" onerror="this.src='https://images.unsplash.com/photo-1548324215-9133768ebb25?w=200&q=70'">
+      </div>
+      <div class="product-thumb">
+        <img src="img/rect-14.jpg" alt="Producto 6" onerror="this.src='https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=200&q=70'">
+      </div>
+    </div>
+
+    <!-- Footer bar -->
+    <div class="products-footer-bar">
+      <span>CÁMARA 4 EN 1 — TORRETA 5MP</span>
+      <span>Halcon Alarm &copy; 2025</span>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro — Halcon Alarm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,400&family=Abhaya+Libre:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page-registro">
+
+    <div class="registro-panel">
+
+      <h1 class="registro-heading">Bienvenido a Halcon Alarm</h1>
+      <p class="registro-sub">Completa los datos para crear tu cuenta</p>
+
+      <span class="user-type-label">Selecciona tu tipo de usuario:</span>
+
+      <div class="user-type-options">
+        <label class="checkbox-wrapper">
+          <input type="radio" name="tipo-usuario" value="empresa">
+          <span>Empresa</span>
+        </label>
+        <label class="checkbox-wrapper">
+          <input type="radio" name="tipo-usuario" value="conjunto">
+          <span>Conjunto residencial</span>
+        </label>
+        <label class="checkbox-wrapper">
+          <input type="radio" name="tipo-usuario" value="hogar" checked>
+          <span>Hogar</span>
+        </label>
+      </div>
+
+      <form class="registro-form-grid" method="post" action="#">
+        <div class="form-group">
+          <label class="form-label" for="r-nombre">Nombre <span class="required">*</span></label>
+          <input class="form-input" id="r-nombre" name="nombre" type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-apellido">Apellido <span class="required">*</span></label>
+          <input class="form-input" id="r-apellido" name="apellido" type="text" placeholder="Tu apellido" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-tipo-id">Tipo de Identificación <span class="required">*</span></label>
+          <input class="form-input" id="r-tipo-id" name="tipo-id" type="text" placeholder="NIT / C.C / T.I / C.E" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-correo">Correo electrónico <span class="required">*</span></label>
+          <input class="form-input" id="r-correo" name="correo" type="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-id">Identificación <span class="required">*</span></label>
+          <input class="form-input" id="r-id" name="identificacion" type="text" placeholder="Número de identificación" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-ciudad">Ciudad <span class="required">*</span></label>
+          <input class="form-input" id="r-ciudad" name="ciudad" type="text" placeholder="Tu ciudad" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-direccion">Dirección <span class="required">*</span></label>
+          <input class="form-input" id="r-direccion" name="direccion" type="text" placeholder="Tu dirección">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r-telefono">Teléfono <span class="required">*</span></label>
+          <input class="form-input" id="r-telefono" name="telefono" type="tel" placeholder="+57 300 000 00 00" required>
+        </div>
+      </form>
+
+      <label class="consent-row">
+        <input type="checkbox" name="privacidad" required>
+        <span>
+          Autorizo el tratamiento de mis datos personales de acuerdo con los términos
+          establecidos en la política de privacidad.
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn--primary" style="align-self:flex-start; width:220px;">REGISTRARME</button>
+
+    </div>
+
+    <div class="registro-image">
+      <img
+        src="img/registro-bg.jpg"
+        alt="Escaleras modernas"
+        onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80'"
+      >
+    </div>
+
+  </div>
+
+</body>
+</html>
