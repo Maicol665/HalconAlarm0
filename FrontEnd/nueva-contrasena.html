@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva Contraseña — Halcon Alarm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,400&family=Abhaya+Libre:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page-reset">
+
+    <div class="reset-image" role="img" aria-label="Edificios modernos"></div>
+
+    <div class="reset-panel">
+      <a href="verificar-codigo.html" class="reset-back">← VOLVER</a>
+
+      <div class="reset-card">
+
+        <div class="reset-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+
+        <h1 class="reset-title">Nueva Contraseña</h1>
+        <p class="reset-desc">Crea una nueva contraseña segura</p>
+
+        <form class="reset-form" method="post" action="#">
+          <div class="form-group">
+            <label class="form-label" for="n-pass">Nueva Contraseña</label>
+            <div class="reset-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input id="n-pass" name="nueva-contrasena" type="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="n-confirm">Confirmar Contraseña</label>
+            <div class="reset-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input id="n-confirm" name="confirmar-contrasena" type="password" placeholder="Repite tu contraseña" minlength="8" required>
+            </div>
+          </div>
+
+          <button type="button" class="btn--reset" onclick="window.location.href='inicio-sesion.html'">
+            Restablecer Contraseña
+          </button>
+
+          <a href="verificar-codigo.html" class="reset-volver">← Volver</a>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
