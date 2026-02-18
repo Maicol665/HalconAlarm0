@@ -109,6 +109,7 @@ button, input, textarea, select {
 .nav-list {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   gap: 0;
 }
@@ -116,7 +117,7 @@ button, input, textarea, select {
 .nav-item a,
 .nav-item .dropdown-btn {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 26px;
   font-weight: 400;
   color: var(--color-black);
   padding: 0 20px;
@@ -278,6 +279,10 @@ button, input, textarea, select {
   width: 38%;
   background-color: var(--color-white);
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: var(--space-lg);
 }
 
 .hero-right {
@@ -298,14 +303,11 @@ button, input, textarea, select {
 }
 
 .hero-content {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: var(--space-lg) var(--space-xl);
   gap: var(--space-xl);
 }
 
